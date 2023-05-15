@@ -1,4 +1,4 @@
-package com.abhijith.socialnetworkapp.ui.theme
+package com.abhijith.socialnetworkapp.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

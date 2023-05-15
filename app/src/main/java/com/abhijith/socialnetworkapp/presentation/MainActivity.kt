@@ -1,4 +1,4 @@
-package com.abhijith.socialnetworkapp
+package com.abhijith.socialnetworkapp.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.abhijith.socialnetworkapp.ui.theme.SocialNetworkAppTheme
+import com.abhijith.socialnetworkapp.presentation.ui.theme.SocialNetworkAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+
                 }
             }
         }
