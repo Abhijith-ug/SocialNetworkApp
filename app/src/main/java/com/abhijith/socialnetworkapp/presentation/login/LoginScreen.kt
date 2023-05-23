@@ -1,12 +1,12 @@
 package com.abhijith.socialnetworkapp.presentation.login
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -19,7 +19,6 @@ import androidx.navigation.NavController
 import com.abhijith.socialnetworkapp.presentation.components.StandardTextField
 import com.abhijith.socialnetworkapp.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.presentation.ui.theme.SpaceMedium
-import com.abhijith.socialnetworkapp.presentation.ui.theme.SpaceSmall
 
 
 @Composable
@@ -27,10 +26,14 @@ fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(start = SpaceLarge, end = SpaceLarge,
-        top = SpaceLarge, bottom = 50.dp)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                start = SpaceLarge, end = SpaceLarge,
+                top = SpaceLarge, bottom = 50.dp
+            )
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -48,16 +51,29 @@ fun LoginScreen(
                 hint = stringResource(id = R.string.usernamehint),
                 onValueChange = {
                     viewModel.setUserNameText(it)
-                })
+                }, error = viewModel.usernameError.value
+            )
             Spacer(modifier = Modifier.height(SpaceMedium))
             StandardTextField(
                 text = viewModel.passwordText.value,
                 hint = stringResource(id = R.string.passwordhint),
                 onValueChange = {
                     viewModel.setPasswordText(it)
-                }, keyboardType = KeyboardType.Password
+                }, keyboardType = KeyboardType.Password,
+                showPasswordToggle = viewModel.showPassword.value,
+                onPasswordToggleClick = {
+                    viewModel.setShowPassword(it)
+                }, error = viewModel.passwordError.value
             )
+            Spacer(modifier = Modifier.height(SpaceLarge))
+            Button(onClick = { }, modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth().height(50.dp)
+            ) {
+                Text(text = stringResource(id = R.string.login)
+                , color = MaterialTheme.colors.onPrimary)
 
+            }
 
         }
         Text(
