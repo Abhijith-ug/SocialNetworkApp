@@ -1,5 +1,6 @@
 package com.abhijith.socialnetworkapp.presentation.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -19,6 +20,7 @@ import androidx.navigation.NavController
 import com.abhijith.socialnetworkapp.presentation.components.StandardTextField
 import com.abhijith.socialnetworkapp.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.presentation.ui.theme.SpaceMedium
+import com.abhijith.socialnetworkapp.presentation.util.Screen
 
 
 @Composable
@@ -66,7 +68,9 @@ fun LoginScreen(
                 }, error = viewModel.passwordError.value
             )
             Spacer(modifier = Modifier.height(SpaceLarge))
-            Button(onClick = { }, modifier = Modifier
+            Button(onClick = {
+                             navController.navigate(Screen.MainFeedScreen.route)
+            }, modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth().height(50.dp)
             ) {
@@ -90,6 +94,11 @@ fun LoginScreen(
                 }
             }, style = MaterialTheme.typography.body1,
             modifier = Modifier.align(Alignment.BottomCenter)
+                .clickable {
+                    navController.navigate(
+                        Screen.RegisterScreen.route
+                    )
+                }
         )
     }
 

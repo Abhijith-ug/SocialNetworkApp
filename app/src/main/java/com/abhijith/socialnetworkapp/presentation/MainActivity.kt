@@ -8,10 +8,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.abhijith.socialnetworkapp.presentation.components.StandardScaffold
 import com.abhijith.socialnetworkapp.presentation.ui.theme.SocialNetworkAppTheme
 import com.abhijith.socialnetworkapp.presentation.util.Navigation
+import com.abhijith.socialnetworkapp.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,12 +25,26 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SocialNetworkAppTheme {
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                   Navigation()
+
+                    val navController = rememberNavController()
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    StandardScaffold(navController = navController,
+                        showBottomBar = navBackStackEntry?.destination?.route in listOf(
+                            Screen.MainFeedScreen.route,
+                            Screen.ChatScreen.route,
+                            Screen.ActivityScreen.route,
+                            Screen.ProfileScreen.route
+                        )
+                    , modifier = Modifier.fillMaxSize()) {
+                        Navigation(navController)
+
+                    }
                 }
             }
         }

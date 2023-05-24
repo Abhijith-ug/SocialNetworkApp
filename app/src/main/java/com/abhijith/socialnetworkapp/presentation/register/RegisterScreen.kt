@@ -1,6 +1,8 @@
 package com.abhijith.socialnetworkapp.presentation.register
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,17 +21,21 @@ import com.abhijith.socialnetworkapp.presentation.components.StandardTextField
 import com.abhijith.socialnetworkapp.presentation.login.LoginViewModel
 import com.abhijith.socialnetworkapp.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.presentation.ui.theme.SpaceMedium
-
+import com.abhijith.socialnetworkapp.presentation.util.Screen
 
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: RegisterViewModel = hiltViewModel()
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(start = SpaceLarge, end = SpaceLarge,
-            top = SpaceLarge, bottom = 50.dp)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                start = SpaceLarge, end = SpaceLarge,
+                top = SpaceLarge, bottom = 50.dp
+            )
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -38,32 +44,53 @@ fun RegisterScreen(
 
             ) {
             Text(
-                text = stringResource(id = R.string.login),
+                text = stringResource(id = R.string.register),
                 style = MaterialTheme.typography.h1
             )
             Spacer(modifier = Modifier.height(SpaceMedium))
             StandardTextField(
+                text = viewModel.emailText.value,
+                hint = stringResource(id = R.string.email),
+                onValueChange = {
+                    viewModel.setEmailText(it)
+                }, error = viewModel.emailError.value
+            )
+            Spacer(modifier = Modifier.height(SpaceMedium))
+            StandardTextField(
                 text = viewModel.usernameText.value,
-                hint = stringResource(id = R.string.usernamehint),
+                hint = stringResource(id = R.string.username),
                 onValueChange = {
                     viewModel.setUserNameText(it)
-                })
+                }, error = viewModel.usernameError.value
+            )
             Spacer(modifier = Modifier.height(SpaceMedium))
             StandardTextField(
                 text = viewModel.passwordText.value,
                 hint = stringResource(id = R.string.passwordhint),
                 onValueChange = {
                     viewModel.setPasswordText(it)
-                }, keyboardType = KeyboardType.Password
+                }, keyboardType = KeyboardType.Password,
+                showPasswordToggle = viewModel.showPassword.value,
+                onPasswordToggleClick = {
+                    viewModel.setShowPassword(it)
+                }, error = viewModel.passwordError.value
             )
+            Spacer(modifier = Modifier.height(SpaceLarge))
+            Button(onClick = { }, modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth().height(50.dp)
+            ) {
+                Text(text = stringResource(id = R.string.register)
+                    , color = MaterialTheme.colors.onPrimary)
 
+            }
 
         }
         Text(
             text = buildAnnotatedString {
-                append(stringResource(id = R.string.dont_have_an_account_yet))
+                append(stringResource(id = R.string.already_have_an_account))
                 append(" ")
-                val signUpText = stringResource(id = R.string.sign_up)
+                val signUpText = stringResource(id = R.string.sign_in)
                 withStyle(
                     style = SpanStyle(
                         color = MaterialTheme.colors.primary
@@ -73,6 +100,9 @@ fun RegisterScreen(
                 }
             }, style = MaterialTheme.typography.body1,
             modifier = Modifier.align(Alignment.BottomCenter)
+                .clickable {
+                   navController.popBackStack()
+                }
         )
     }
 
