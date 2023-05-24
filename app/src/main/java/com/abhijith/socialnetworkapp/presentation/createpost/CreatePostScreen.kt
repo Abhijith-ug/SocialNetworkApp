@@ -1,4 +1,4 @@
-package com.abhijith.socialnetworkapp.presentation.profile
+package com.abhijith.socialnetworkapp.presentation.createpost
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,15 +10,14 @@ import androidx.navigation.NavController
 import com.abhijith.socialnetworkapp.presentation.components.StandardScaffold
 
 @Composable
-fun ProfileScreen(navController: NavController){
-    StandardScaffold(navController = navController,
-        modifier = Modifier.fillMaxSize()) {
+fun CreatePostScreen(navController:NavController){
 
-        Box(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center){
-            Text(text = "profile Screen")
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "Create Post Screen")
         }
-
     }
 
-}

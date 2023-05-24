@@ -16,16 +16,17 @@ import com.abhijith.socialnetworkapp.presentation.components.StandardScaffold
 fun MainFeedScreen(
     navController: NavController
 ){
-    StandardScaffold(navController=navController, modifier = Modifier.fillMaxSize()) {
-        Post(post = Post(
-            username = "Abhijith",
-            imageUrl = "",
-            profilePictureUrl = "",
-            description = "kdfkdng igidnfn sonfgsngso n sdingds fsg sdgning  sfna goangagdkng dbgjdbgd  sbgs gsj",
-            likeCount = 17,
-            commentCount = 7
-        ))
+    StandardScaffold(navController = navController,
+        modifier = Modifier.fillMaxSize()) {
+        Post(
+            post = Post(
+                username = "Abhijith",
+                imageUrl = "",
+                profilePictureUrl = "",
+                description = "kdfkdng igidnfn sonfgsngso n sdingds fsg sdgning  sfna goangagdkng dbgjdbgd  sbgs gsj",
+                likeCount = 17,
+                commentCount = 7
+            )
+        )
     }
-
-
 }

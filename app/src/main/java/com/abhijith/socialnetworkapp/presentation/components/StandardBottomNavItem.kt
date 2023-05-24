@@ -27,7 +27,7 @@ import com.abhijith.socialnetworkapp.presentation.ui.theme.SpaceSmall
 @Composable
 @Throws(java.lang.IllegalArgumentException::class)
 fun RowScope.StandardBottomNavItem(
-    icon: ImageVector,
+    icon: ImageVector? = null,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     selected: Boolean = false,
@@ -67,11 +67,14 @@ fun RowScope.StandardBottomNavItem(
                     }
 
                 }) {
+                 if (icon!=null){
+                     Icon(
+                         imageVector = icon, contentDescription = contentDescription,
+                         modifier = Modifier.align(Alignment.Center)
+                     )
+                 }
 
-                Icon(
-                    imageVector = icon, contentDescription = contentDescription,
-                    modifier = Modifier.align(Alignment.Center)
-                )
+
                 if (alertCount != null) {
                     val alertText = if (alertCount > 99) {
                         "99+"
