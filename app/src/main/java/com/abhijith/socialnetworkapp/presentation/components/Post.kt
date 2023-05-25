@@ -41,7 +41,8 @@ import com.abhijith.socialnetworkapp.presentation.ui.theme.*
 import com.abhijith.socialnetworkapp.util.Constants
 
 @Composable
-fun Post(post: Post,profilePictureSize:Dp = 75.dp) {
+fun Post(post: Post,profilePictureSize:Dp = 75.dp
+,onPostClick:() -> Unit = {}) {
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(SpaceMedium)) {
@@ -51,6 +52,9 @@ fun Post(post: Post,profilePictureSize:Dp = 75.dp) {
                 .offset(y = profilePictureSize / 2f)
                 .clip(MaterialTheme.shapes.medium)
                 .background(MediumGray)
+                .clickable {
+                    onPostClick()
+                }
         ) {
             Image(painterResource(id = R.drawable.posttt), contentDescription = "post image")
             Column(modifier = Modifier

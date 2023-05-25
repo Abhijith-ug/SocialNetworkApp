@@ -19,7 +19,8 @@ private val LightColorPalette = lightColors(
    primary = BlueAccent,
     background = BackWhite,
     onBackground = TextWhite,
-    onPrimary = BackWhite
+    onPrimary = BackWhite,
+    surface = MediumGray
 
 
 

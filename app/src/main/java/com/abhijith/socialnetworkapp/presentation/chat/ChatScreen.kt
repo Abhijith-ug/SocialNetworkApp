@@ -11,14 +11,8 @@ import com.abhijith.socialnetworkapp.presentation.components.StandardScaffold
 
 @Composable
 fun ChatScreen(navController: NavController){
-    StandardScaffold(navController = navController,
-    modifier = Modifier.fillMaxSize()) {
-
         Box(modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center){
+        contentAlignment = Alignment.Center) {
             Text(text = "Chat Screen")
         }
-
-    }
-
 }

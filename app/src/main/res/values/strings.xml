@@ -24,4 +24,11 @@
     <string name="activity">Activity</string>
     <string name="profile">Profile</string>
     <string name="make_post">Make Post</string>
+    <string name="back_Arrow">ArrowBack</string>
+    <string name="your_feed">Your Feed</string>
+    <string name="liked">Liked</string>
+    <string name="commented_on">Commented on</string>
+    <string name="your_post">Your Post</string>
+    <string name="your_activity">Your Activity</string>
+    <string name="your_profile">Your Profile</string>
 </resources>
