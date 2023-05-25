@@ -41,15 +41,21 @@ import com.abhijith.socialnetworkapp.presentation.ui.theme.*
 import com.abhijith.socialnetworkapp.util.Constants
 
 @Composable
-fun Post(post: Post,profilePictureSize:Dp = 75.dp
-,onPostClick:() -> Unit = {}) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(SpaceMedium)) {
+fun Post(
+    post: Post,
+    modifier: Modifier = Modifier,
+    showProfileImage: Boolean = true,
+    onPostClick: () -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(SpaceMedium)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = profilePictureSize / 2f)
+                .offset(y = if (showProfileImage) profilePictureSizeMedium / 2f else 0.dp)
                 .clip(MaterialTheme.shapes.medium)
                 .background(MediumGray)
                 .clickable {
@@ -57,9 +63,11 @@ fun Post(post: Post,profilePictureSize:Dp = 75.dp
                 }
         ) {
             Image(painterResource(id = R.drawable.posttt), contentDescription = "post image")
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(SpaceMedium)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(SpaceMedium)
+            ) {
                 Spacer(modifier = Modifier.height(SpaceMedium))
                 ActionRow(modifier = Modifier.fillMaxWidth(), username = "Abhijith",
                     onLikeClick = { isLiked ->
@@ -73,7 +81,7 @@ fun Post(post: Post,profilePictureSize:Dp = 75.dp
                     },
                     onUsernameClick = { username ->
                     })
-                Spacer(modifier = Modifier.height(SpaceSmall) )
+                Spacer(modifier = Modifier.height(SpaceSmall))
 
                 Text(
                     text = buildAnnotatedString {
@@ -94,19 +102,25 @@ fun Post(post: Post,profilePictureSize:Dp = 75.dp
                     overflow = TextOverflow.Ellipsis,
                     maxLines = Constants.MAX_POST_DESCRIPTION_LINES
                 )
-                Spacer(modifier = Modifier.height(SpaceMedium) )
+                Spacer(modifier = Modifier.height(SpaceMedium))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = stringResource(id = R.string.liked_by_x_people,
+                    Text(
+                        text = stringResource(
+                            id = R.string.liked_by_x_people,
 
-                        post.likeCount), fontSize = 16.sp,
+                            post.likeCount
+                        ), fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.h2
                     )
-                    Text(text = stringResource(id = R.string.x_comments,
-                        post.commentCount), fontWeight = FontWeight.Bold,
+                    Text(
+                        text = stringResource(
+                            id = R.string.x_comments,
+                            post.commentCount
+                        ), fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         style = MaterialTheme.typography.h2
                     )
@@ -115,13 +129,16 @@ fun Post(post: Post,profilePictureSize:Dp = 75.dp
             }
 
         }
-        Image(
-            painterResource(id = R.drawable.profilepic), contentDescription = "profile picture",
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(profilePictureSize)
-                .align(Alignment.TopCenter), contentScale = ContentScale.Crop
-        )
+        if (showProfileImage) {
+            Image(
+                painterResource(id = R.drawable.profilepic), contentDescription = "profile picture",
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(profilePictureSizeMedium)
+                    .align(Alignment.TopCenter), contentScale = ContentScale.Crop
+            )
+        }
+
 
     }
 
@@ -135,7 +152,10 @@ fun EngagementButtons(
     onCommentClick: () -> Unit = {},
     onShareClick: () -> Unit = {}
 ) {
-    Row(horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         IconButton(onClick = {
             onLikeClick(!isLiked)
         }, modifier = Modifier.size(iconSize)) {
@@ -190,7 +210,11 @@ fun ActionRow(
     username: String,
     onUsernameClick: (String) -> Unit = {}
 ) {
-    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
         Text(text = username, style = TextStyle(
             fontWeight = FontWeight.Bold,
