@@ -1,5 +1,6 @@
-package com.abhijith.socialnetworkapp.presentation.util
+package com.abhijith.socialnetworkapp.core.presentation.components
 
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,7 +20,7 @@ import com.abhijith.socialnetworkapp.featureprofile.presentation.search.SearchSc
 import com.abhijith.socialnetworkapp.featureauth.presentation.splash.SplashScreen
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController,scaffoldState: ScaffoldState) {
     NavHost(
         navController = navController,
         startDestination = Screen.SplashScreen.route
@@ -31,7 +32,7 @@ fun Navigation(navController: NavHostController) {
             LoginScreen(navController = navController)
         }
         composable(Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController)
+            RegisterScreen(navController = navController,scaffoldState)
         }
         composable(Screen.MainFeedScreen.route) {
             MainFeedScreen(navController = navController)

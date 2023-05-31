@@ -9,88 +9,81 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import com.abhijith.socialnetworkapp.R
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.IconSizeMedium
-import java.time.format.TextStyle
 
 @Composable
 fun StandardTextField(
-    modifier: Modifier =Modifier,
+    modifier: Modifier = Modifier,
     text: String,
     hint: String,
-    maxLenth:Int = 10,
+    maxLength: Int = 400,
     error: String = "",
     style: androidx.compose.ui.text.TextStyle = androidx.compose.ui.text.TextStyle(
         MaterialTheme.colors.onBackground
     ),
-    singleLine:Boolean = true,
-    maxLines:Int=1,
-    leadingIcon:ImageVector? = null,
+    singleLine: Boolean = true,
+    maxLines: Int = 1,
+    leadingIcon: ImageVector? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
-    isPasswordToggleDisplayed:Boolean =keyboardType == KeyboardType.Password,
-    showPasswordToggle:Boolean = false,
+    isPasswordToggleDisplayed: Boolean = keyboardType == KeyboardType.Password,
+    showPasswordToggle: Boolean = false,
     onPasswordToggleClick: (Boolean) -> Unit = {},
     onValueChange: (String) -> Unit,
-    ) {
+) {
 
 
     Column(modifier = modifier.fillMaxWidth()) {
 
         TextField(
             value = text,
-            onValueChange ={if(it.length<maxLenth){
-                onValueChange(it)
-            } } ,
+            onValueChange = {
+                if (it.length < maxLength) {
+                    onValueChange(it)
+                }
+            },
             maxLines = maxLines,
             textStyle = style,
             placeholder = {
                 Text(text = hint, style = MaterialTheme.typography.body1)
             },
-            isError = error!="",
+            isError = error != "",
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-            visualTransformation = if (!showPasswordToggle&&isPasswordToggleDisplayed){
+            visualTransformation = if (!showPasswordToggle && isPasswordToggleDisplayed) {
                 PasswordVisualTransformation()
-            }
-            else{
+            } else {
                 VisualTransformation.None
             },
             modifier = Modifier.fillMaxWidth(),
             singleLine = singleLine,
-            leadingIcon = if (leadingIcon!=null){
+            leadingIcon = if (leadingIcon != null) {
                 {
-                    Icon(imageVector = leadingIcon, contentDescription = null,
+                    Icon(
+                        imageVector = leadingIcon, contentDescription = null,
                         tint = MaterialTheme.colors.onBackground,
                         modifier = Modifier.size(IconSizeMedium)
                     )
                 }
 
-            }else null,
+            } else null,
             trailingIcon = {
                 if (isPasswordToggleDisplayed) {
-                    IconButton(onClick = {onPasswordToggleClick(showPasswordToggle)}) {
+                    IconButton(onClick = { onPasswordToggleClick(showPasswordToggle) }) {
                         Icon(
                             imageVector = if (showPasswordToggle) {
                                 Icons.Filled.VisibilityOff
                             } else {
                                 Icons.Filled.Visibility
-                            }, contentDescription = if (showPasswordToggle){
+                            }, contentDescription = if (showPasswordToggle) {
                                 stringResource(id = R.string.password_visible_content_description)
-                            }
-                            else{
+                            } else {
                                 stringResource(id = R.string.password_hidden_content_description)
                             }
                         )
@@ -99,16 +92,16 @@ fun StandardTextField(
                 }
             }
         )
-        if (error.isNotEmpty()){
-            Text(text = error,
-            style = MaterialTheme.typography.body2
-            , color = MaterialTheme.colors.error,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth())
+        if (error.isNotEmpty()) {
+            Text(
+                text = error,
+                style = MaterialTheme.typography.body2, color = MaterialTheme.colors.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
     }
-
 
 
 }

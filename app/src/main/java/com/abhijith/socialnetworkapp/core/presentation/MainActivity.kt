@@ -14,7 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.abhijith.socialnetworkapp.core.presentation.components.StandardScaffold
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SocialNetworkAppTheme
-import com.abhijith.socialnetworkapp.presentation.util.Navigation
+import com.abhijith.socialnetworkapp.core.presentation.components.Navigation
 import com.abhijith.socialnetworkapp.core.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val scaffoldState = rememberScaffoldState()
                     StandardScaffold(
-                        scaffoldState = scaffoldState,
+
                         navController = navController,
                         showBottomBar = navBackStackEntry?.destination?.route in listOf(
                             Screen.MainFeedScreen.route,
@@ -44,8 +44,8 @@ class MainActivity : ComponentActivity() {
                         ),
                         modifier = Modifier.fillMaxSize(), onFabClick = {
                             navController.navigate(Screen.CreatePostScreen.route)
-                        }) {
-                        Navigation(navController)
+                        }, state = scaffoldState) {
+                        Navigation(navController,scaffoldState)
                     }
                 }
             }

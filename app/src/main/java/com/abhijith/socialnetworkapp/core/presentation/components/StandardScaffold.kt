@@ -23,7 +23,7 @@ fun StandardScaffold(
     navController: NavController,
     modifier: Modifier = Modifier,
     showBottomBar: Boolean = true,
-    scaffoldState : ScaffoldState,
+    state:ScaffoldState,
     bottomNavItems: List<BottomNavItem> = listOf(
         BottomNavItem(
             route = Screen.MainFeedScreen.route,
@@ -52,7 +52,6 @@ fun StandardScaffold(
     content: @Composable () -> Unit
 ) {
     Scaffold(
-        scaffoldState = scaffoldState,
         bottomBar = {
             if (showBottomBar) {
                 BottomAppBar(
@@ -83,7 +82,7 @@ fun StandardScaffold(
             }
 
 
-        }, floatingActionButton = {
+        }, scaffoldState = state, floatingActionButton = {
             if (showBottomBar) {
                 FloatingActionButton(onClick = onFabClick) {
                     Icon(

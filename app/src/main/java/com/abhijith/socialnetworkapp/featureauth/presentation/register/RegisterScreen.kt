@@ -2,12 +2,12 @@ package com.abhijith.socialnetworkapp.featureauth.presentation.register
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -22,15 +22,33 @@ import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceMedium
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.featureauth.util.AuthError
+import com.abhijith.socialnetworkapp.presentation.util.asString
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun RegisterScreen(
     navController: NavController,
+    scaffoldState: ScaffoldState,
     viewModel: RegisterViewModel = hiltViewModel()
 ) {
     val usernameState = viewModel.usernameState.value
     val emailState = viewModel.emailState.value
     val passwordState = viewModel.passwordState.value
+    val registerState = viewModel.registerState.value
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is RegisterViewModel.UiEvent.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        event.uiText.asString(context),
+                        duration = SnackbarDuration.Long
+                    )
+                }
+            }
+        }
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +75,7 @@ fun RegisterScreen(
                 onValueChange = {
                     viewModel.onEvent(RegisterEvent.EnteredEmail(it))
                 }, error = when (emailState.error) {
-                   is AuthError.FieldEmpty -> {
+                    is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.this_field_cant_be_empty)
                     }
                     AuthError.InvalidEmail -> {
@@ -81,7 +99,8 @@ fun RegisterScreen(
                     AuthError.InputTooShort -> {
                         stringResource(id = R.string.input_too_short, Constants.MIN_USERNAME_LENGTH)
                     }
-                    else -> ""}
+                    else -> ""
+                }
             )
             Spacer(modifier = Modifier.height(SpaceMedium))
             StandardTextField(
@@ -94,7 +113,7 @@ fun RegisterScreen(
                 onPasswordToggleClick = {
                     viewModel.onEvent(RegisterEvent.TogglePasswordVisibility)
                 }, error = when (passwordState.error) {
-                   is  AuthError.FieldEmpty -> {
+                    is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.this_field_cant_be_empty)
                     }
                     AuthError.InputTooShort -> {
@@ -103,11 +122,14 @@ fun RegisterScreen(
                     AuthError.InvalidPassword -> {
                         stringResource(id = R.string.invalid_password)
                     }
-                    else -> ""}
+                    else -> ""
+                }
             )
             Spacer(modifier = Modifier.height(SpaceLarge))
             Button(
-                onClick = {viewModel.onEvent(RegisterEvent.Register) }, modifier = Modifier
+                onClick = { viewModel.onEvent(RegisterEvent.Register) },
+                enabled = !registerState.isLoading,
+                modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
                     .height(50.dp)
@@ -117,6 +139,9 @@ fun RegisterScreen(
                     color = MaterialTheme.colors.onPrimary
                 )
 
+            }
+            if (registerState.isLoading) {
+                CircularProgressIndicator()
             }
 
         }
