@@ -20,9 +20,10 @@ import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.presentation.components.StandardTextField
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceMedium
+import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.featureauth.util.AuthError
-import com.abhijith.socialnetworkapp.presentation.util.asString
+import com.abhijith.socialnetworkapp.core.presentation.util.asString
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -40,12 +41,13 @@ fun RegisterScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is RegisterViewModel.UiEvent.SnackbarEvent -> {
+                is UiEvent.SnackbarEvent -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         event.uiText.asString(context),
                         duration = SnackbarDuration.Long
                     )
                 }
+                else -> {}
             }
         }
     }

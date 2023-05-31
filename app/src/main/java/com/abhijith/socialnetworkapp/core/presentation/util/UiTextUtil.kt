@@ -1,4 +1,4 @@
-package com.abhijith.socialnetworkapp.presentation.util
+package com.abhijith.socialnetworkapp.core.presentation.util
 
 import android.content.Context
 import androidx.compose.runtime.Composable

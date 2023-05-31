@@ -1,6 +1,7 @@
 package com.abhijith.socialnetworkapp.featureauth.domain.use_case
 
-import com.abhijith.socialnetworkapp.core.util.simpleResource
+import com.abhijith.socialnetworkapp.core.domain.util.ValidationUtil
+import com.abhijith.socialnetworkapp.featureauth.domain.models.RegisterResult
 import com.abhijith.socialnetworkapp.featureauth.domain.repository.AuthRepository
 
 class RegisterUseCase(private val repository: AuthRepository) {
@@ -9,7 +10,23 @@ class RegisterUseCase(private val repository: AuthRepository) {
         email:String,
         username:String,
         password:String
-    ):simpleResource{
-          return repository.register(email.trim(),username.trim(),password.trim())
+    ):RegisterResult{
+        val emailError = ValidationUtil.validateEmail(email)
+        val usernameError = ValidationUtil.validateUsername(username)
+        val passwordError = ValidationUtil.validatePassword(password)
+
+        if (emailError !=null || usernameError !=null || passwordError !=null){
+            return RegisterResult(
+                emailError = emailError,
+                usernameError  = usernameError,
+                passwordError = passwordError,
+
+            )
+        }
+        val result =  repository.register(email.trim(),username.trim(),password.trim())
+
+        return RegisterResult(
+            result = result
+        )
     }
 }
