@@ -56,4 +56,9 @@
     <string name="error_couldnt_reach_server">couldn\'t reach server, check your interner connection</string>
     <string name="oops_something_went_wrong">Oops! Something went wrong. Please try again.</string>
     <string name="success_registration">Registration Successfull, you can login now</string>
+    <string name="create_a_new_post">Create Post</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="description">Description</string>
+    <string name="post">Post</string>
+    <string name="error_file_not_found">Oops The file couldn\'t be found</string>
 </resources>

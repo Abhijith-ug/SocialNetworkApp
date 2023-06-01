@@ -6,9 +6,9 @@ import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.core.util.SimpleResource
-import com.abhijith.socialnetworkapp.featureauth.data.dto.request.CreateAccountRequest
-import com.abhijith.socialnetworkapp.featureauth.data.dto.request.LoginRequest
-import com.abhijith.socialnetworkapp.featureauth.data.remote.AuthApi
+import com.abhijith.socialnetworkapp.featureauth.data.datasource.remote.request.CreateAccountRequest
+import com.abhijith.socialnetworkapp.featureauth.data.datasource.remote.request.LoginRequest
+import com.abhijith.socialnetworkapp.featureauth.data.datasource.remote.AuthApi
 import com.abhijith.socialnetworkapp.featureauth.domain.repository.AuthRepository
 import retrofit2.HttpException
 import java.io.IOException

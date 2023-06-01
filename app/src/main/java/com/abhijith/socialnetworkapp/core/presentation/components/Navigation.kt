@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.util.Screen
-import com.abhijith.socialnetworkapp.featurepost.presentation.MainFeed.MainFeedScreen
+import com.abhijith.socialnetworkapp.featurepost.presentation.mainFeed.MainFeedScreen
 import com.abhijith.socialnetworkapp.featureprofile.presentation.PostDetail.PostDetailScreen
 import com.abhijith.socialnetworkapp.featureactivity.presentation.ActivityScreen
 import com.abhijith.socialnetworkapp.presentation.chat.ChatScreen
@@ -35,7 +35,7 @@ fun Navigation(navController: NavHostController,scaffoldState: ScaffoldState) {
             RegisterScreen(navController = navController,scaffoldState)
         }
         composable(Screen.MainFeedScreen.route) {
-            MainFeedScreen(navController = navController)
+            MainFeedScreen(navController = navController,scaffoldState)
         }
         composable(Screen.ChatScreen.route) {
             ChatScreen(navController = navController)

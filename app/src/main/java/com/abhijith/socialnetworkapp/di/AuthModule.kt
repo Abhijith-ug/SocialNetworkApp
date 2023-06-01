@@ -2,7 +2,7 @@ package com.abhijith.socialnetworkapp.di
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.abhijith.socialnetworkapp.featureauth.data.remote.AuthApi
+import com.abhijith.socialnetworkapp.featureauth.data.datasource.remote.AuthApi
 import com.abhijith.socialnetworkapp.featureauth.data.repository.AuthRepositoryImpl
 import com.abhijith.socialnetworkapp.featureauth.domain.repository.AuthRepository
 import com.abhijith.socialnetworkapp.featureauth.domain.use_case.AuthenticateUseCase
@@ -24,7 +24,7 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun provideAuthApi(client:OkHttpClient): AuthApi{
+    fun provideAuthApi(client:OkHttpClient): AuthApi {
         return Retrofit.Builder()
             .baseUrl(AuthApi.BASE_URL)
             .client(client)
@@ -38,7 +38,7 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(api:AuthApi,sharedPreferences: SharedPreferences):AuthRepository{
+    fun provideAuthRepository(api: AuthApi, sharedPreferences: SharedPreferences):AuthRepository{
         return AuthRepositoryImpl(api, sharedPreferences)
     }
 
