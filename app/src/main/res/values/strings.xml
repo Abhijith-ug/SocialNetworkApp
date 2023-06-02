@@ -61,4 +61,5 @@
     <string name="description">Description</string>
     <string name="post">Post</string>
     <string name="error_file_not_found">Oops The file couldn\'t be found</string>
+    <string name="post_image">Post image</string>
 </resources>
