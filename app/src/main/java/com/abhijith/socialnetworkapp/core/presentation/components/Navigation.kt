@@ -69,7 +69,7 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
         ) {
             ProfileScreen(    onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate, scaffoldState = scaffoldState,
-            userId = it.arguments?.getString("userId")?: "",)
+            userId = it.arguments?.getString("userId"),)
         }
         composable(Screen.EditProfileScreen.route + "/{userId}",
             arguments = listOf(

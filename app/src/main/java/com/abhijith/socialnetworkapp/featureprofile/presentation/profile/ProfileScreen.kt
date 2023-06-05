@@ -56,10 +56,10 @@ import javax.annotation.meta.When
 
 @Composable
 fun ProfileScreen(
-    userId:String,
+    scaffoldState: ScaffoldState,
+    userId:String? = null,
     onNavigate: (String) -> Unit = { },
     onNavigateUp: () -> Unit = {},
-    scaffoldState: ScaffoldState,
     profilePictureSize: Dp = profilePictureSizeLarge,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
