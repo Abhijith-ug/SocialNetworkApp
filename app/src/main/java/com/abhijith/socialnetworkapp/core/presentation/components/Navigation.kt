@@ -2,9 +2,12 @@ package com.abhijith.socialnetworkapp.core.presentation.components
 
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.util.Screen
 import com.abhijith.socialnetworkapp.featurepost.presentation.mainFeed.MainFeedScreen
@@ -20,44 +23,75 @@ import com.abhijith.socialnetworkapp.featureprofile.presentation.search.SearchSc
 import com.abhijith.socialnetworkapp.featureauth.presentation.splash.SplashScreen
 
 @Composable
-fun Navigation(navController: NavHostController,scaffoldState: ScaffoldState) {
+fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
     NavHost(
         navController = navController,
         startDestination = Screen.SplashScreen.route
     ) {
         composable(Screen.SplashScreen.route) {
-            SplashScreen(navController = navController)
+            SplashScreen(
+                onPopBackStack = navController::popBackStack,
+                onNavigate = navController::navigate
+            )
         }
         composable(Screen.LoginScreen.route) {
-            LoginScreen(navController = navController,scaffoldState)
+            LoginScreen(
+                onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
+            )
         }
         composable(Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController,scaffoldState)
+            RegisterScreen(navController = navController, scaffoldState)
         }
         composable(Screen.MainFeedScreen.route) {
-            MainFeedScreen(navController = navController,scaffoldState)
+            MainFeedScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
+            )
         }
         composable(Screen.ChatScreen.route) {
-            ChatScreen(navController = navController)
+            ChatScreen(    onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,)
         }
         composable(Screen.ActivityScreen.route) {
-            ActivityScreen(navController = navController)
+            ActivityScreen(    onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate)
         }
-        composable(Screen.ProfileScreen.route) {
-            ProfileScreen(navController = navController)
+        composable(route = Screen.ProfileScreen.route + "?userId={userId}",
+            arguments = listOf(
+                navArgument(name = "userId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
+            ProfileScreen(    onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate, scaffoldState = scaffoldState,
+            userId = it.arguments?.getString("userId")?: "",)
         }
-        composable(Screen.EditProfileScreen.route) {
-            EditProfileScreen(navController = navController)
+        composable(Screen.EditProfileScreen.route + "/{userId}",
+            arguments = listOf(
+                navArgument(name = "userId") {
+                    type = NavType.StringType
+                }
+        ) ){
+            EditProfileScreen(    onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate, scaffoldState = scaffoldState)
         }
-        composable(Screen.SearchScreen.route){
-            SearchScreen(navController = navController)
+        composable(Screen.SearchScreen.route) {
+            SearchScreen(    onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate)
         }
         composable(Screen.CreatePostScreen.route) {
-            CreatePostScreen(navController = navController)
+            CreatePostScreen( onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate, scaffoldState =scaffoldState)
         }
         composable(Screen.PostDetailScreen.route) {
             PostDetailScreen(
-                navController = navController,
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
                 post = Post(
                     username = "Abhijith",
                     imageUrl = "",

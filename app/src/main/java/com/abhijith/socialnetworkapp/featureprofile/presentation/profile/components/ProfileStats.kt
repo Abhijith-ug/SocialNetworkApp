@@ -36,7 +36,7 @@ fun ProfileStats(
         Spacer(modifier = Modifier.width(SpaceLarge))
         ProfileNumber(number = user.postCount, text = stringResource(id = R.string.posts))
 
-        if (isOwnProfile){
+        if (!isOwnProfile){
             Spacer(modifier = Modifier.width(SpaceLarge))
             Button(onClick = onFollowClick ,
                 colors = ButtonDefaults.buttonColors(

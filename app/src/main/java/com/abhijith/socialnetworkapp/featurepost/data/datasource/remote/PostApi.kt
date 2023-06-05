@@ -21,8 +21,4 @@ interface PostApi {
         @Part postData: MultipartBody.Part,
         @Part postImage:MultipartBody.Part
     ):BasicApiResponse<Unit>
-
-    companion object{
-        const val BASE_URL = "http://192.168.64.145:8001/"
-    }
 }

@@ -2,6 +2,7 @@ package com.abhijith.socialnetworkapp.di
 
 import android.content.SharedPreferences
 import android.util.Log
+import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.featureauth.data.datasource.remote.AuthApi
 import com.abhijith.socialnetworkapp.featureauth.data.repository.AuthRepositoryImpl
 import com.abhijith.socialnetworkapp.featureauth.domain.repository.AuthRepository
@@ -26,7 +27,7 @@ object AuthModule {
     @Singleton
     fun provideAuthApi(client:OkHttpClient): AuthApi {
         return Retrofit.Builder()
-            .baseUrl(AuthApi.BASE_URL)
+            .baseUrl(Constants.BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

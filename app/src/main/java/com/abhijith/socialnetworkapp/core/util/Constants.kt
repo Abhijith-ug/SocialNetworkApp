@@ -8,4 +8,8 @@ object Constants {
     const val PAGE_SIZE_POSTS = 20
     const val KEY_JWT_TOKEN = "jwt_token"
     const val SHARED_PREF_NAME = "shared_pref"
+
+    const val BASE_URL  = "http://192.168.43.141:8001/"
+
+
 }

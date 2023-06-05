@@ -1,59 +1,53 @@
 package com.abhijith.socialnetworkapp.featurepost.presentation.createpost
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import coil.compose.ImagePainter.State.Empty.painter
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.abhijith.socialnetworkapp.R
-import com.abhijith.socialnetworkapp.core.domain.states.StandardTextFieldState
-import com.abhijith.socialnetworkapp.core.domain.util.getFileName
-import com.abhijith.socialnetworkapp.core.presentation.components.StandardScaffold
 import com.abhijith.socialnetworkapp.core.presentation.components.StandardTextField
 import com.abhijith.socialnetworkapp.core.presentation.components.StandardToolbar
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceMedium
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceSmall
 import com.abhijith.socialnetworkapp.core.presentation.util.CropActivityResultContract
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
-import java.io.File
-import java.util.UUID
+import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
+import com.abhijith.socialnetworkapp.core.presentation.util.asString
+import com.abhijith.socialnetworkapp.featurepost.util.PostConstants
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 
 fun CreatePostScreen(
-            navController: NavController,
+    onNavigateUp : () -> Unit = {},
+    onNavigate: (String) -> Unit = { },
+            scaffoldState: ScaffoldState,
             viewModel: CreatePostViewModel = hiltViewModel()
 ) {
 
     val imageUri = viewModel.chosenImageUri.value
     val cropActivityLauncher = rememberLauncherForActivityResult(
-        contract = CropActivityResultContract()
+        contract = CropActivityResultContract(16f,9f)
  ){
         viewModel.onEvent(CreatePostEvent.CropImage(it))
     }
@@ -62,22 +56,44 @@ fun CreatePostScreen(
                  cropActivityLauncher.launch(it)
     }
 
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true ){
+        viewModel.eventFlow.collectLatest {
+            event ->
+            when(event){
+
+                is UiEvent.ShowSnackBar -> {
+                    GlobalScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = event.uiText.asString(context)
+                        )
+                    }
+
+                }
+                is UiEvent.NavigateUp -> {
+                   onNavigateUp()
+                }
+                else -> null
+            }
+        }
+    }
+
 
     Column(
                 modifier = Modifier.fillMaxSize()
             ) {
                 StandardToolbar(
-                    navController = navController,
-                    showBackArrow = true,
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.create_a_new_post),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
-                )
-                Column(
+                    onNavigateUp = onNavigateUp,
+                    showBackArrow = true
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.create_a_new_post),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
+        Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(SpaceLarge)
@@ -120,6 +136,7 @@ fun CreatePostScreen(
                         error = "",
                         singleLine = false,
                         maxLines = 5,
+                        maxLength = PostConstants.MAX_POST_DESCRIPTION_LENGTH,
                         onValueChange = {
                             viewModel.onEvent(
                                 CreatePostEvent.EnterDescription(it)
@@ -131,6 +148,7 @@ fun CreatePostScreen(
                         onClick = {
                                   viewModel.onEvent(CreatePostEvent.PostImage)
                         },
+                        enabled = !viewModel.isLoading.value,
                         modifier = Modifier.align(Alignment.End)
                     ) {
                         Text(
@@ -138,7 +156,17 @@ fun CreatePostScreen(
                             color = MaterialTheme.colors.onPrimary
                         )
                         Spacer(modifier = Modifier.width(SpaceSmall))
-                        Icon(imageVector = Icons.Default.Send, contentDescription = null)
+                        if (viewModel.isLoading.value){
+                           CircularProgressIndicator(
+                               color = MaterialTheme.colors.onPrimary,
+                               modifier = Modifier.
+                                       size(20.dp)
+                                   .align(CenterVertically)
+                           )
+                        }else{
+                            Icon(imageVector = Icons.Default.Send, contentDescription = null)
+
+                        }
                     }
                 }
             }

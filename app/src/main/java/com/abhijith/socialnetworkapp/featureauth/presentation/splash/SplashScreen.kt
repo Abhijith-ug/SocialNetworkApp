@@ -18,26 +18,28 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun SplashScreen(navController: NavController,viewModel: SplashViewModel = hiltViewModel()){
+fun SplashScreen(
+                 onPopBackStack:() -> Unit = {},
+                 onNavigate:(String) -> Unit = {},
+                 viewModel: SplashViewModel = hiltViewModel()) {
 
-    LaunchedEffect(key1 =true , ){
+    LaunchedEffect(key1 = true) {
         delay(Constants.SPLASH_SCREEN_DURATION)
 
     }
-    LaunchedEffect(key1 = true ){
-       viewModel.eventFlow.collectLatest {
-           event ->
-           when(event){
-               is UiEvent.Navigate -> {
-                   navController.popBackStack()
-                   navController.navigate(event.route)
-               }
-               else -> Unit
-           }
-       }
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    onPopBackStack()
+                    onNavigate(event.route)
+                }
+                else -> Unit
+            }
+        }
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Image(painter = painterResource(id = R.drawable.sociallogo), contentDescription = "Logo")
     }
 

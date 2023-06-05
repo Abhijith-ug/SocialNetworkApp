@@ -19,9 +19,4 @@ interface AuthApi {
 
     @GET("api/user/authenticate")
     suspend fun authenticate()
-
-    companion object{
-        const val BASE_URL  = "http://192.168.64.145:8001/"
-
-    }
 }

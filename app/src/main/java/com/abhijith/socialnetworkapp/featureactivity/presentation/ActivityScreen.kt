@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.domain.models.Activity
 import com.abhijith.socialnetworkapp.domain.util.ActivityAction
@@ -21,12 +20,13 @@ import com.abhijith.socialnetworkapp.presentation.activity.ActivityItem
 import kotlin.random.Random
 
 @Composable
-fun ActivityScreen(navController: NavController ,
+fun ActivityScreen(onNavigate: (String) -> Unit = { },
+                   onNavigateUp : () -> Unit = {},
 viewModel: ActivityViewModel = hiltViewModel()){
     Column(modifier = Modifier.fillMaxWidth()) {
 
         StandardToolbar(
-            navController = navController,
+            onNavigateUp = onNavigateUp,
             title = {
                 Text(
                     text = stringResource(id = R.string.your_activity),

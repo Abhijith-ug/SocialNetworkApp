@@ -1,6 +1,5 @@
 package com.abhijith.socialnetworkapp.featureauth.presentation.login
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,7 +10,6 @@ import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.core.util.Screen
 import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.featureauth.domain.use_case.LoginUseCase
-import com.abhijith.socialnetworkapp.featureauth.presentation.register.RegisterViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -83,7 +81,7 @@ class LoginViewModel @Inject constructor(
                         }
                         is Resource.Error -> {
                              _eventFlow.emit(
-                                 UiEvent.SnackbarEvent(loginResult.result.uiText ?: UiText.unKnownError())
+                                 UiEvent.ShowSnackBar(loginResult.result.uiText ?: UiText.unKnownError())
                              )
                         }
                         null -> Unit

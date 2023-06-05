@@ -1,6 +1,7 @@
 package com.abhijith.socialnetworkapp.di
 
 import android.content.Context
+import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.PostApi
 import com.abhijith.socialnetworkapp.featurepost.data.repository.PostRepositoryImp
 import com.abhijith.socialnetworkapp.featurepost.domain.repository.PostRepository
@@ -27,7 +28,7 @@ object PostModule {
     fun providePostApi(client:OkHttpClient):PostApi{
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(PostApi.BASE_URL)
+            .baseUrl(Constants.BASE_URL)
             .client(client)
             .build()
             .create(PostApi::class.java)

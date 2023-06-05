@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,7 +35,6 @@ fun UserProfileItem(
         onClick = onItemClick,
         elevation = 5.dp
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -47,13 +47,15 @@ fun UserProfileItem(
                 contentDescription = null,
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(profilePictureSizeBtwSmallMed)
+                    .size(profilePictureSizeBtwSmallMed),
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(SpaceSmall))
 
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
+                    .weight(1f)
             ) {
                 Text(
                     text = user.username, style = MaterialTheme.typography.body1.copy(
@@ -66,14 +68,11 @@ fun UserProfileItem(
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2
                 )
-
             }
             Spacer(modifier = Modifier.width(SpaceSmall))
             IconButton(onClick = { onActionItemClick }, modifier = Modifier.size(IconSizeMedium)) {
                 actionIcon()
             }
-
         }
-
     }
 }

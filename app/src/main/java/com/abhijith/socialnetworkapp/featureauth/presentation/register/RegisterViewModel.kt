@@ -1,6 +1,5 @@
 package com.abhijith.socialnetworkapp.featureauth.presentation.register
 
-import android.util.Patterns
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,15 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.domain.states.PasswordTextFieldState
 import com.abhijith.socialnetworkapp.core.domain.states.StandardTextFieldState
-import com.abhijith.socialnetworkapp.core.domain.util.ValidationUtil.validateEmail
-import com.abhijith.socialnetworkapp.core.domain.util.ValidationUtil.validatePassword
-import com.abhijith.socialnetworkapp.core.domain.util.ValidationUtil.validateUsername
 import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
-import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.featureauth.domain.use_case.RegisterUseCase
-import com.abhijith.socialnetworkapp.featureauth.util.AuthError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -104,7 +98,7 @@ class RegisterViewModel @Inject constructor(private val registerUseCase: Registe
             when (registerResult.result) {
                 is Resource.Success -> {
                     _eventFlow.emit(
-                        UiEvent.SnackbarEvent(UiText.StringResource(R.string.success_registration))
+                        UiEvent.ShowSnackBar(UiText.StringResource(R.string.success_registration))
                     )
                     _registerState.value = RegisterState(isLoading = false)
                     _usernameState.value = StandardTextFieldState()
@@ -115,7 +109,7 @@ class RegisterViewModel @Inject constructor(private val registerUseCase: Registe
                 }
                 is Resource.Error -> {
                     _eventFlow.emit(
-                        UiEvent.SnackbarEvent(registerResult.result.uiText ?: UiText.unKnownError())
+                        UiEvent.ShowSnackBar(registerResult.result.uiText ?: UiText.unKnownError())
                     )
                     _registerState.value = RegisterState(isLoading = false)
                 }

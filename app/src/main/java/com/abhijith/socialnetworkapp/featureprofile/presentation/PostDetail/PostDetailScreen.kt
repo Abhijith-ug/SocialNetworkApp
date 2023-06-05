@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.domain.models.Comment
 import com.abhijith.socialnetworkapp.core.domain.models.Post
@@ -28,13 +27,13 @@ import com.abhijith.socialnetworkapp.core.presentation.ui.theme.*
 
 @Composable
 fun PostDetailScreen(
-    navController: NavController,
-    post: Post,
+    onNavigate: (String) -> Unit = { },
+    onNavigateUp : () -> Unit = {},    post: Post,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
 
         StandardToolbar(
-            navController = navController,
+            onNavigateUp = onNavigateUp,
             title = {
                 Text(
                     text = stringResource(id = R.string.your_feed),
