@@ -1,4 +1,4 @@
-package com.abhijith.socialnetworkapp.featurepost.data.datasource.remote
+package com.abhijith.socialnetworkapp.core.data.remote
 
 import com.abhijith.socialnetworkapp.core.data.dto.response.BasicApiResponse
 import com.abhijith.socialnetworkapp.core.domain.models.Post
@@ -21,4 +21,11 @@ interface PostApi {
         @Part postData: MultipartBody.Part,
         @Part postImage:MultipartBody.Part
     ):BasicApiResponse<Unit>
+
+    @GET("api/user/posts")
+    suspend fun getPostsForProfile(
+        @Query("userId") userId:String,
+        @Query("page") page:Int,
+        @Query("pageSize") pageSize:Int
+    ):List<Post>
 }

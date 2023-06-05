@@ -1,8 +1,7 @@
 package com.abhijith.socialnetworkapp.di
 
-import android.content.Context
 import com.abhijith.socialnetworkapp.core.util.Constants
-import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.PostApi
+import com.abhijith.socialnetworkapp.core.data.remote.PostApi
 import com.abhijith.socialnetworkapp.featurepost.data.repository.PostRepositoryImp
 import com.abhijith.socialnetworkapp.featurepost.domain.repository.PostRepository
 import com.abhijith.socialnetworkapp.featurepost.domain.use_case.CreatePostUseCase
@@ -12,7 +11,6 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -25,7 +23,7 @@ object PostModule {
 
     @Provides
     @Singleton
-    fun providePostApi(client:OkHttpClient):PostApi{
+    fun providePostApi(client:OkHttpClient): PostApi {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(Constants.BASE_URL)
@@ -35,7 +33,7 @@ object PostModule {
     }
     @Provides
     @Singleton
-    fun providePostRepository(api:PostApi,gson: Gson):PostRepository{
+    fun providePostRepository(api: PostApi, gson: Gson):PostRepository{
         return PostRepositoryImp(api,gson)
     }
 

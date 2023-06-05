@@ -1,6 +1,7 @@
 package com.abhijith.socialnetworkapp.featureprofile.data.remote
 
 import com.abhijith.socialnetworkapp.core.data.dto.response.BasicApiResponse
+import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.featureprofile.data.remote.response.ProfileResponse
 import com.abhijith.socialnetworkapp.featureprofile.data.remote.response.SkillDto
 import okhttp3.MultipartBody
@@ -27,5 +28,7 @@ interface ProfileApi {
 
     @GET("api/skills/get")
     suspend fun getSkills(): List<SkillDto>
+
+
 
 }

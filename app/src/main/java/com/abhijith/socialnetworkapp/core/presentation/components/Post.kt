@@ -31,6 +31,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.ImagePainter.State.Empty.painter
+import coil.compose.rememberImagePainter
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.*
 import com.abhijith.socialnetworkapp.core.domain.models.Post
@@ -58,7 +60,15 @@ fun Post(
                     onPostClick()
                 }
         ) {
-            Image(painterResource(id = R.drawable.posttt), contentDescription = "post image")
+            Image(
+                painter = rememberImagePainter(
+                    data = post
+                        .imageUrl,
+                    builder = {
+                        crossfade(true)
+                    }
+                ), contentDescription = "post image"
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -127,7 +137,10 @@ fun Post(
         }
         if (showProfileImage) {
             Image(
-                painterResource(id = R.drawable.profilepic), contentDescription = "profile picture",
+                painter = rememberImagePainter(data = post.profilePictureUrl,
+                builder = {
+                    crossfade(true)
+                }), contentDescription = "profile picture",
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(profilePictureSizeMedium)

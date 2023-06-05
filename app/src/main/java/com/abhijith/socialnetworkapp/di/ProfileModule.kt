@@ -1,5 +1,6 @@
 package com.abhijith.socialnetworkapp.di
 
+import com.abhijith.socialnetworkapp.core.data.remote.PostApi
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.featureprofile.data.remote.ProfileApi
 import com.abhijith.socialnetworkapp.featureprofile.data.repository.ProfileRepositoryImpl
@@ -33,8 +34,8 @@ object ProfileModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(api: ProfileApi,gson: Gson): ProfileRepository {
-        return ProfileRepositoryImpl(api,gson)
+    fun provideProfileRepository(profileApi: ProfileApi, postApi: PostApi, gson: Gson): ProfileRepository {
+        return ProfileRepositoryImpl(profileApi,postApi,gson)
     }
 
     @Provides
@@ -44,7 +45,8 @@ object ProfileModule {
             getProfileUseCase = GetProfileUseCase(repository),
             getSkillsUseCase = GetSkillsUseCase(repository),
             updateProfileUseCase = UpdateProfileUseCase(repository),
-            setSkillSelectedUseCase = SetSkillSelectedUseCase( )
+            setSkillSelectedUseCase = SetSkillSelectedUseCase( ),
+            getPostsForProfileUseCase = GetPostsForProfileUseCase(repository)
         )
     }
 }

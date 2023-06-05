@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
 import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.core.util.UiText
@@ -31,12 +32,10 @@ class ProfileViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    init {
-//        savedStateHandle.get<String>("userId")?.let { userId ->
-//            Log.d("abii", "User id : $userId")
-//            getProfile(userId)
-//        }
-    }
+   val posts = profileUseCases.getPostsForProfileUseCase(
+       savedStateHandle.get<String>("userId") ?: ""
+   ).cachedIn(viewModelScope)
+
 
     fun setExpandedRatio(ratio: Float) {
         _toolbarState.value = _toolbarState.value.copy(expandedRatio = ratio)
@@ -78,6 +77,7 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         }
+
     }
 
 }
