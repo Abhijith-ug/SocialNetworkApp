@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -26,38 +25,33 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.domain.models.User
 import com.abhijith.socialnetworkapp.core.presentation.components.Post
-import com.abhijith.socialnetworkapp.core.presentation.components.StandardToolbar
-import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.components.BannerSection
-import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.components.ProfileHeaderSection
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceMedium
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceSmall
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.profilePictureSizeLarge
 import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
 import com.abhijith.socialnetworkapp.core.presentation.util.asString
+import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Screen
 import com.abhijith.socialnetworkapp.core.util.toPx
+import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.components.BannerSection
+import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.components.ProfileHeaderSection
 import kotlinx.coroutines.flow.collectLatest
-import javax.annotation.meta.When
 
 @Composable
 fun ProfileScreen(
     scaffoldState: ScaffoldState,
-    userId:String? = null,
+    userId: String? = null,
     onNavigate: (String) -> Unit = { },
     onNavigateUp: () -> Unit = {},
     profilePictureSize: Dp = profilePictureSizeLarge,
@@ -142,7 +136,6 @@ fun ProfileScreen(
             }
             item {
                 state.profile?.let { profile ->
-                    Log.d("abii", "From Profile screen : $profile")
                     ProfileHeaderSection(
                         user = User(
                             userId = profile.userId,
@@ -151,27 +144,27 @@ fun ProfileScreen(
                             description = profile.bio,
                             followerCount = profile.followerCount,
                             followingCount = profile.followingCount,
-                            postCount = profile.postCount
+                            postCount = profile.postCount,
                         ),
+                        isFollowing = profile.isFollowing,
                         isOwnProfile = profile.isOwnProfile,
-                        onEditClick = { onNavigate(Screen.EditProfileScreen.route+"/${profile.userId  }") }
+                        onEditClick = { onNavigate(Screen.EditProfileScreen.route + "/${profile.userId}") },
                     )
                 }
             }
-            items(posts) {
-                post ->
+            items(posts) { post ->
                 Spacer(
                     modifier = Modifier
                         .height(SpaceMedium)
                 )
                 Post(
                     post = Post(
-                        username = post?.username?:"",
-                        imageUrl = post?.imageUrl?:"",
-                        profilePictureUrl = post?.profilePictureUrl ?:"",
-                        description = post?.description ?:"",
-                        likeCount = post?.likeCount?:0,
-                        commentCount = post?.commentCount?:0,
+                        username = post?.username ?: "",
+                        imageUrl = "${Constants.BASE_URL}${post?.imageUrl}" ?: "",
+                        profilePictureUrl = "${Constants.BASE_URL}${post?.profilePictureUrl}" ?: "",
+                        description = post?.description ?: "",
+                        likeCount = post?.likeCount ?: 0,
+                        commentCount = post?.commentCount ?: 0,
                     ),
                     showProfileImage = false,
                     onPostClick = {
@@ -185,6 +178,7 @@ fun ProfileScreen(
                 .align(Alignment.TopCenter)
         ) {
             state.profile?.let { profile ->
+                Log.d("GIT", "${profile.gitHubUrl}")
                 BannerSection(
                     modifier = Modifier
                         .height(
@@ -207,10 +201,10 @@ fun ProfileScreen(
                             translationX = (1f - toolbarState.expandedRatio) *
                                     -iconHorizontalCenterLength
                         },
-                    topSkills = profile.topSkills?: emptyList(),
-                    shouldShowGitHub = profile.gitHubUrl != null&&profile.gitHubUrl.isNotBlank(),
-                    shouldShowInstagram = profile.instagramUrl != null&&profile.instagramUrl.isNotBlank(),
-                    shouldShowLinkedIn = profile.linkedInUrl != null&&profile.linkedInUrl.isNotBlank(),
+                    topSkills = profile.topSkills ?: emptyList(),
+                    shouldShowGitHub = profile.gitHubUrl != null && profile.gitHubUrl.isNotBlank(),
+                    shouldShowInstagram = profile.instagramUrl != null && profile.instagramUrl.isNotBlank(),
+                    shouldShowLinkedIn = profile.linkedInUrl != null && profile.linkedInUrl.isNotBlank(),
                     bannerUrl = profile.bannerUrl
                 )
                 Image(

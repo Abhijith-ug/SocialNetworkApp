@@ -1,5 +1,6 @@
 package com.abhijith.socialnetworkapp.core.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -60,7 +61,9 @@ fun Post(
                     onPostClick()
                 }
         ) {
+            Log.d("Hello", "Post: Image url: ${post.imageUrl}")
             Image(
+                modifier = Modifier.aspectRatio(1.77f),
                 painter = rememberImagePainter(
                     data = post
                         .imageUrl,
@@ -138,19 +141,16 @@ fun Post(
         if (showProfileImage) {
             Image(
                 painter = rememberImagePainter(data = post.profilePictureUrl,
-                builder = {
-                    crossfade(true)
-                }), contentDescription = "profile picture",
+                    builder = {
+                        crossfade(true)
+                    }), contentDescription = "profile picture",
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(profilePictureSizeMedium)
                     .align(Alignment.TopCenter), contentScale = ContentScale.Crop
             )
         }
-
-
     }
-
 }
 
 @Composable

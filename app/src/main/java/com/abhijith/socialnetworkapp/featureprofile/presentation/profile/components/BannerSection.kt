@@ -18,6 +18,7 @@ import coil.compose.rememberImagePainter
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceMedium
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceSmall
+import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.toPx
 import com.abhijith.socialnetworkapp.featureprofile.domain.model.Skill
 
@@ -73,7 +74,7 @@ fun BannerSection(
             topSkills.forEach { skill ->
                 Spacer(modifier = Modifier.width(SpaceSmall))
                 Image(
-                    painter = rememberImagePainter(data = skill.imageUrl,
+                    painter = rememberImagePainter(data = "${Constants.BASE_URL}${skill.imageUrl}",
                         builder = {
                             crossfade(true)
                         }),

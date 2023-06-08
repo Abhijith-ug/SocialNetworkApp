@@ -25,24 +25,24 @@ import java.io.IOException
 class PostRepositoryImp(
     private val api: PostApi,
     private val gson: Gson,
-):PostRepository {
+) : PostRepository {
 
     override val posts: Flow<PagingData<Post>>
-        get() = Pager(PagingConfig(pageSize = Constants.PAGE_SIZE_POSTS)){
-            PostSource(api,PostSource.Source.Follows)
+        get() = Pager(PagingConfig(pageSize = Constants.PAGE_SIZE_POSTS)) {
+            PostSource(api, PostSource.Source.Follows)
         }.flow
 
-    override suspend fun createPost(description: String,imageUri: Uri): SimpleResource {
+    override suspend fun createPost(description: String, imageUri: Uri): SimpleResource {
         val request = CreatePostRequest(description)
         val file = imageUri.toFile()
 
         return try {
             val response = api.createPost(
-                 postData = MultipartBody.Part
-                     .createFormData(
-                         "post_data",
-                         gson.toJson(request)
-                     ),
+                postData = MultipartBody.Part
+                    .createFormData(
+                        "post_data",
+                        gson.toJson(request)
+                    ),
                 postImage = MultipartBody.Part
                     .createFormData(
                         name = "post_image",

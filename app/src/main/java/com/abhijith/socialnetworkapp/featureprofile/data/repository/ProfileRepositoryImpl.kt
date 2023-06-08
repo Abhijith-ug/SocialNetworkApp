@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.data.remote.PostApi
 import com.abhijith.socialnetworkapp.core.domain.models.Post
+import com.abhijith.socialnetworkapp.core.domain.models.UserItem
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Constants.BASE_URL
 import com.abhijith.socialnetworkapp.core.util.Resource
@@ -16,6 +17,7 @@ import com.abhijith.socialnetworkapp.core.util.SimpleResource
 import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.pagesource.PostSource
 import com.abhijith.socialnetworkapp.featureprofile.data.remote.ProfileApi
+import com.abhijith.socialnetworkapp.featureprofile.data.remote.request.FollowUpdateRequest
 import com.abhijith.socialnetworkapp.featureprofile.domain.model.Profile
 import com.abhijith.socialnetworkapp.featureprofile.domain.model.Skill
 import com.abhijith.socialnetworkapp.featureprofile.domain.model.UpdateProfileData
@@ -110,7 +112,7 @@ class ProfileRepositoryImpl(
     }
 
 
-    override suspend fun getSkills(): Resource< List<Skill>> {
+    override suspend fun getSkills(): Resource<List<Skill>> {
         return try {
             val response = profileApi.getSkills()
             Resource.Success(
@@ -126,10 +128,70 @@ class ProfileRepositoryImpl(
         }
     }
 
+
+
+
     override fun getPostPaged(userId: String): Flow<PagingData<Post>> {
         return  Pager(PagingConfig(pageSize = Constants.PAGE_SIZE_POSTS)){
             PostSource(postApi,PostSource.Source.Profile(userId))
         }.flow
+    }
+
+    override suspend fun searchUser(query: String): Resource<List<UserItem>> {
+        return try {
+            val response = profileApi.searchUser(query)
+            val searchResult = response
+            Resource.Success(
+                data = response.map {
+                    it.toUserItem().copy(
+                        profilePictureUrl = "${BASE_URL}${it.profilePictureUrl}"
+                    )
+                }
+            )
+        }
+        catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
+    }
+
+    override suspend fun followUser(userId: String): SimpleResource {
+        return try {
+            val response = profileApi.followUser(
+                request = FollowUpdateRequest(userId)
+            )
+            if (response.successful) {
+                Resource.Success(Unit)
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(id = R.string.error_unknown))
+            }
+        } catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
+    }
+
+    override suspend fun unfollowUser(userId: String): SimpleResource {
+        return try {
+            val response = profileApi.unfollowUser(
+                userId = userId
+            )
+            if (response.successful) {
+                Resource.Success(Unit)
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(id = R.string.error_unknown))
+            }
+        } catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
     }
 
 

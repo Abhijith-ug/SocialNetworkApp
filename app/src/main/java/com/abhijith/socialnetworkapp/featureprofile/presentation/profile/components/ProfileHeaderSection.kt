@@ -33,6 +33,7 @@ fun ProfileHeaderSection(
     user: User,
     modifier: Modifier = Modifier,
     isOwnProfile: Boolean = true,
+    isFollowing:Boolean = true,
     onEditClick: () -> Unit = {}
 ) {
     Column(
@@ -81,6 +82,6 @@ fun ProfileHeaderSection(
             Spacer(modifier = Modifier.height(SpaceLarge))
         }
 
-        ProfileStats(user = user, isOwnProfile = isOwnProfile)
+        ProfileStats(user = user, isOwnProfile = isOwnProfile, isFollowing = isFollowing)
     }
 }

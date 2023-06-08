@@ -1,15 +1,16 @@
-package com.abhijith.socialnetworkapp.featureprofile.data.remote.response
+package com.abhijith.socialnetworkapp.core.data.dto.response
 
-import com.abhijith.socialnetworkapp.featureprofile.domain.model.UserItem
+import com.abhijith.socialnetworkapp.core.domain.models.UserItem
 
-data class UserResponseItem(
+data class UserItemDto(
     val userId:String,
     val username:String,
     val profilePictureUrl:String,
     val bio:String,
     val isFollowing:Boolean
 ){
-    fun toUserItem():UserItem{
+
+    fun toUserItem(): UserItem {
         return UserItem(
             userId = userId,
             username = username,
@@ -19,3 +20,4 @@ data class UserResponseItem(
         )
     }
 }
+

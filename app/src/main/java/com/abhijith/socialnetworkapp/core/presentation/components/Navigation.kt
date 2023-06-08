@@ -51,12 +51,16 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
             )
         }
         composable(Screen.ChatScreen.route) {
-            ChatScreen(    onNavigateUp = navController::navigateUp,
-                onNavigate = navController::navigate,)
+            ChatScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+            )
         }
         composable(Screen.ActivityScreen.route) {
-            ActivityScreen(    onNavigateUp = navController::navigateUp,
-                onNavigate = navController::navigate)
+            ActivityScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate
+            )
         }
         composable(route = Screen.ProfileScreen.route + "?userId={userId}",
             arguments = listOf(
@@ -67,26 +71,34 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
                 }
             )
         ) {
-            ProfileScreen(    onNavigateUp = navController::navigateUp,
+            ProfileScreen(
+                onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate, scaffoldState = scaffoldState,
-            userId = it.arguments?.getString("userId"),)
+                userId = it.arguments?.getString("userId"),
+            )
         }
         composable(Screen.EditProfileScreen.route + "/{userId}",
             arguments = listOf(
                 navArgument(name = "userId") {
                     type = NavType.StringType
                 }
-        ) ){
-            EditProfileScreen(    onNavigateUp = navController::navigateUp,
-                onNavigate = navController::navigate, scaffoldState = scaffoldState)
+            )) {
+            EditProfileScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate, scaffoldState = scaffoldState
+            )
         }
         composable(Screen.SearchScreen.route) {
-            SearchScreen(    onNavigateUp = navController::navigateUp,
-                onNavigate = navController::navigate)
+            SearchScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate
+            )
         }
         composable(Screen.CreatePostScreen.route) {
-            CreatePostScreen( onNavigateUp = navController::navigateUp,
-                onNavigate = navController::navigate, scaffoldState =scaffoldState)
+            CreatePostScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate, scaffoldState = scaffoldState
+            )
         }
         composable(Screen.PostDetailScreen.route) {
             PostDetailScreen(

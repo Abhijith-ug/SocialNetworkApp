@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.IconSizeMedium
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceSmall
@@ -43,7 +44,10 @@ fun UserProfileItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = painterResource(id = R.drawable.profilepic),
+                painter = rememberImagePainter(data = user.profilePictureUrl,
+                builder = {
+                    crossfade(true)
+                }),
                 contentDescription = null,
                 modifier = Modifier
                     .clip(CircleShape)

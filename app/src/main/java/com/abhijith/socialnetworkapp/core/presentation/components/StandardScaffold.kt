@@ -74,10 +74,7 @@ fun StandardScaffold(
                                 }
                             }
                         }
-
                     }
-
-
                 }
             }
 
