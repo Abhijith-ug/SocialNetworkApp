@@ -43,8 +43,6 @@ fun PostDetailScreen(
             modifier = Modifier.fillMaxWidth(),
             showBackArrow = true,
         )
-
-
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -140,68 +138,77 @@ fun Comment(
     comment: Comment = Comment(),
     onLikeClick: (Boolean) -> Unit = {}
 ) {
-
     Card(
-        modifier = Modifier.
-        padding(SpaceMedium),
-
+        modifier = modifier,
         elevation = 5.dp,
         shape = MaterialTheme.shapes.medium,
-        backgroundColor = MaterialTheme.colors.surface
+        backgroundColor = MaterialTheme.colors.surface,
     ) {
-
-        Column(modifier = Modifier.fillMaxSize()
-            .padding(SpaceMedium)) {
-
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(SpaceMedium)
+        ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.profilepic),
                         contentDescription = null,
-                        modifier = Modifier.size(profilePictureSizeSmall)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(profilePictureSizeSmall)
                     )
                     Spacer(modifier = Modifier.width(SpaceSmall))
                     Text(
                         text = comment.username,
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.onBackground
                     )
-
                 }
-                Text(text = "2 days ago")
-
+                Text(
+                    text = "2 days ago",
+                    style = MaterialTheme.typography.body2
+                )
             }
             Spacer(modifier = Modifier.height(SpaceMedium))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
             ) {
-
-                Text(text = comment.comment, style = MaterialTheme.typography.body1)
-                IconButton(onClick = { onLikeClick(comment.isLiked)}) {
-                    Icon(imageVector = Icons.Default.Favorite, contentDescription =
-                    if (comment.isLiked){
-                        stringResource(id = R.string.unlike)
-                    }else{
-                        stringResource(id = R.string.like)
-                    })
+                Text(
+                    text = comment.comment,
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.weight(9f)
+                )
+                Spacer(modifier = Modifier.width(SpaceMedium))
+                IconButton(
+                    onClick = {
+                        onLikeClick(comment.isLiked)
+                    },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = if (comment.isLiked) {
+                            stringResource(id = R.string.unlike)
+                        } else stringResource(id = R.string.like)
+                    )
                 }
-
-
             }
             Spacer(modifier = Modifier.height(SpaceMedium))
-            Text(text = stringResource(id = R.string.liked_by_x_people,comment.likeCount)
-            ,fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.body1)
-
+            Text(
+                text = stringResource(id = R.string.liked_by_x_people, comment.likeCount),
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.onBackground
+            )
         }
-
     }
-
 }
-

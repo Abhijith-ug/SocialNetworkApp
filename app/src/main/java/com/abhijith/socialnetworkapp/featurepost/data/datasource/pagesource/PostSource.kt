@@ -22,13 +22,13 @@ class PostSource(
                 is Source.Follows -> {
                     api.getPostForFollows(
                         page = nextPage,
-                        pageSize = Constants.PAGE_SIZE_POSTS
+                        pageSize = Constants.DEFAULT_PAGE_SIZE
                     )
                 }
                 is Source.Profile -> api.getPostsForProfile(
                     userId = source.userId,
                     page = nextPage,
-                    pageSize = Constants.PAGE_SIZE_POSTS
+                    pageSize = Constants.DEFAULT_PAGE_SIZE
                 )
 
             }
