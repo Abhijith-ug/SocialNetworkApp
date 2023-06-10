@@ -110,6 +110,7 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
         )
         ) {
             PostDetailScreen(
+                scaffoldState  = scaffoldState,
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate,
 

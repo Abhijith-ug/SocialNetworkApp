@@ -15,6 +15,7 @@ import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.pagesource.PostSource
 import com.abhijith.socialnetworkapp.core.data.remote.PostApi
 import com.abhijith.socialnetworkapp.core.domain.models.Comment
+import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreateCommentRequest
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreatePostRequest
 import com.abhijith.socialnetworkapp.featurepost.domain.repository.PostRepository
 import com.abhijith.socialnetworkapp.featureprofile.data.remote.request.FollowUpdateRequest
@@ -94,6 +95,28 @@ class PostRepositoryImp(
             }
             Resource.Success(comments)
         }catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
+    }
+
+    override suspend fun createComment(postId: String, comment: String): SimpleResource {
+        return try {
+            val response = api.createComment(
+                    CreateCommentRequest(
+                        comment = comment,
+                        postId = postId
+                    )
+            )
+            if (response.successful) {
+                Resource.Success(response.data)
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(id = R.string.error_unknown))
+            }
+        } catch (e: IOException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
         } catch (e: HttpException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))

@@ -5,6 +5,7 @@ import com.abhijith.socialnetworkapp.core.domain.models.Comment
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.dto.CommentDto
+import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreateCommentRequest
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreatePostRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -41,4 +42,9 @@ interface PostApi {
     suspend fun getCommentsForPost(
         @Query("postId") postId:String
     ):List<CommentDto>
+
+    @POST("/api/comment/create")
+    suspend fun createComment(
+         @Body request:CreateCommentRequest
+    ): BasicApiResponse<Unit>
 }

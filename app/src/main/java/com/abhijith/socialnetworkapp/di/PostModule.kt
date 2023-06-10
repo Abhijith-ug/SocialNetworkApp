@@ -42,7 +42,8 @@ object PostModule {
             getPostsForFollowUseCase = GetPostForFollowsUseCase(repository),
             createPostUseCase = CreatePostUseCase(repository),
             getPostDetailsUseCase = GetPostDetailsUseCase(repository),
-            getCommentsForPostUseCase = GetCommentsForPostUseCase(repository)
+            getCommentsForPostUseCase = GetCommentsForPostUseCase(repository),
+            createCommentUseCase = CreateCommentUseCase(repository)
         )
     }
 }
