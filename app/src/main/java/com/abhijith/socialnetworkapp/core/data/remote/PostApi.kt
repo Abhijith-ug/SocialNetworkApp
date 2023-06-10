@@ -7,6 +7,7 @@ import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.dto.CommentDto
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreateCommentRequest
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreatePostRequest
+import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.LikeUpdateRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -47,4 +48,15 @@ interface PostApi {
     suspend fun createComment(
          @Body request:CreateCommentRequest
     ): BasicApiResponse<Unit>
+
+    @POST("/api/like")
+    suspend fun likeParent(
+        @Body request: LikeUpdateRequest
+    ): BasicApiResponse<Unit>
+
+    @DELETE("/api/unlike")
+    suspend fun unlikeParent(
+        @Query("parentId") parentId:String,
+        @Query("parentType") parentType:Int
+    ):BasicApiResponse<Unit>
 }

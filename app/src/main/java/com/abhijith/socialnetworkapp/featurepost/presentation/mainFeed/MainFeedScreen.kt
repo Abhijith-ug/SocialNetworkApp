@@ -65,6 +65,8 @@ fun MainFeedScreen(
                     Post(
                         post = Post(
                             id = post?.id ?:"" ,
+                            userId = post?.userId?:"",
+                            isLiked = post?.isLiked?:false,
                             username =post?.username ?: "" ,
                             imageUrl = post?.imageUrl ?: "",
                             profilePictureUrl = post?.profilePictureUrl ?: "",
@@ -73,7 +75,8 @@ fun MainFeedScreen(
                             commentCount = post?.commentCount ?: 0
                         ), onPostClick = {
                             onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
-                        }
+                        },
+
                     )
                 }
                 item {

@@ -74,12 +74,27 @@ fun Comment(
             Row(
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(
-                    text = comment.comment,
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.onBackground,
+                Column(
                     modifier = Modifier.weight(9f)
-                )
+                ) {
+
+                    Text(
+                        text = comment.comment,
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(SpaceSmall))
+                    Text(
+                        text = stringResource(id = R.string.liked_by_x_people, comment.likeCount),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    
+                }
+
                 Spacer(modifier = Modifier.width(SpaceMedium))
                 IconButton(
                     onClick = {
@@ -100,13 +115,7 @@ fun Comment(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(SpaceMedium))
-            Text(
-                text = stringResource(id = R.string.liked_by_x_people, comment.likeCount),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onBackground
-            )
+
         }
     }
 }

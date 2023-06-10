@@ -160,6 +160,8 @@ fun ProfileScreen(
                 Post(
                     post = Post(
                         id = post?.id?:"",
+                        userId = post?.userId?:"",
+                        isLiked = post?.isLiked?:false,
                         username = post?.username ?: "",
                         imageUrl = "${Constants.BASE_URL}${post?.imageUrl}" ?: "",
                         profilePictureUrl = "${Constants.BASE_URL}${post?.profilePictureUrl}" ?: "",

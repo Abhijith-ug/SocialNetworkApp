@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.domain.states.StandardTextFieldState
 import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
+import com.abhijith.socialnetworkapp.core.util.ParentType
 import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.featurepost.domain.use_case.PostUseCases
@@ -51,7 +52,12 @@ class PostDetailViewModel @Inject constructor(
     fun onEvent(event: PostDetailEvent){
         when(event){
             is PostDetailEvent.LikePost -> {
-
+                val isLiked = state.value.post?.isLiked == true
+                toggleLikeForParent(
+                    parentId = state.value.post?.id ?: return,
+                    parentType =ParentType.Post.type,
+                    isLiked = isLiked
+                )
             }
             is PostDetailEvent.Comment -> {
                  createComment(
@@ -60,7 +66,14 @@ class PostDetailViewModel @Inject constructor(
                  )
             }
             is PostDetailEvent.LikeComment -> {
-
+                val isLiked =  state.value.comments.find {
+                    it.id == event.commentId
+                }?.isLiked == true
+                toggleLikeForParent(
+                    parentId = event.commentId,
+                    parentType =ParentType.Comment.type,
+                    isLiked = isLiked
+                )
             }
             is PostDetailEvent.SharePost -> {
 
@@ -98,6 +111,61 @@ class PostDetailViewModel @Inject constructor(
                             result.uiText?: UiText.unKnownError()
                         )
                     )
+                }
+            }
+        }
+    }
+
+    private fun toggleLikeForParent(parentId:String,parentType:Int,isLiked:Boolean){
+        viewModelScope.launch {
+            when(parentType){
+                ParentType.Post.type -> {
+                    _state.value = state.value.copy(
+                        post = state.value.post?.copy(
+                            isLiked = !isLiked
+                        )
+                    )
+                }
+                ParentType.Comment.type -> {
+                        _state.value = state.value.copy(
+                            comments = state.value.comments.map {
+                                if (it.id == parentId){
+                                    it.copy(
+                                        isLiked = !isLiked
+                                    )
+                                }else it
+                            }
+                        )
+                }
+            }
+            val result = postUseCases.toggleLikeForParentUseCase(
+                parentId,parentType,
+                isLiked = isLiked
+            )
+            when(result){
+                is Resource.Success -> Unit
+
+                is Resource.Error -> {
+                    when(parentType){
+                        ParentType.Post.type -> {
+                            _state.value = state.value.copy(
+                                post = state.value.post?.copy(
+                                    isLiked = isLiked
+                                )
+                            )
+                        }
+                        ParentType.Comment.type -> {
+                            _state.value = state.value.copy(
+                                comments = state.value.comments.map {
+                                    if (it.id == parentId){
+                                        it.copy(
+                                            isLiked = !isLiked
+                                        )
+                                    }else it
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
