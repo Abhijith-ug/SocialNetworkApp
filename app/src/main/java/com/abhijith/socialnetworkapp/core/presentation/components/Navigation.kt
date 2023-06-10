@@ -11,7 +11,7 @@ import androidx.navigation.navArgument
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.util.Screen
 import com.abhijith.socialnetworkapp.featurepost.presentation.mainFeed.MainFeedScreen
-import com.abhijith.socialnetworkapp.featureprofile.presentation.PostDetail.PostDetailScreen
+import com.abhijith.socialnetworkapp.featurepost.presentation.PostDetail.PostDetailScreen
 import com.abhijith.socialnetworkapp.featureactivity.presentation.ActivityScreen
 import com.abhijith.socialnetworkapp.presentation.chat.ChatScreen
 import com.abhijith.socialnetworkapp.featurepost.presentation.createpost.CreatePostScreen
@@ -100,22 +100,19 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
                 onNavigate = navController::navigate, scaffoldState = scaffoldState
             )
         }
-        composable(Screen.PostDetailScreen.route) {
+        composable(route = Screen.PostDetailScreen.route + "/{postId}",
+        arguments = listOf(
+            navArgument(
+                name = "postId"
+            ){
+                type = NavType.StringType
+            }
+        )
+        ) {
             PostDetailScreen(
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate,
-                post = Post(
-                    username = "Abhijith",
-                    imageUrl = "",
-                    profilePictureUrl = "",
-                    description = "kdfkdng igidnfn sonfgsngso n sdingds fsg sdgning  sfn" +
-                            "sjdhsdjgsjhkjdshgdjshgdjshgkjshgsjhgjkhgjhd" +
-                            "fjdshgsajgasgjajgajhgjhfdsjashgjsajgkjasngjkan dgjdsjgsaj gsdjgsgh oweognd gdn" +
-                            "jgsajgsajgklsajgklsadgksajgkalsjg dkjgldsjglsdjglsdkj digdijdkjgkdjgjg" +
-                            "kjgkdjkldjkdsnsgsj",
-                    likeCount = 17,
-                    commentCount = 7
-                )
+
             )
         }
 

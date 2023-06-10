@@ -4,9 +4,7 @@ import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.data.remote.PostApi
 import com.abhijith.socialnetworkapp.featurepost.data.repository.PostRepositoryImp
 import com.abhijith.socialnetworkapp.featurepost.domain.repository.PostRepository
-import com.abhijith.socialnetworkapp.featurepost.domain.use_case.CreatePostUseCase
-import com.abhijith.socialnetworkapp.featurepost.domain.use_case.GetPostForFollowsUseCase
-import com.abhijith.socialnetworkapp.featurepost.domain.use_case.PostUseCases
+import com.abhijith.socialnetworkapp.featurepost.domain.use_case.*
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -42,7 +40,9 @@ object PostModule {
     fun providePostUseCases(repository: PostRepository):PostUseCases{
         return PostUseCases(
             getPostsForFollowUseCase = GetPostForFollowsUseCase(repository),
-            createPostUseCase = CreatePostUseCase(repository)
+            createPostUseCase = CreatePostUseCase(repository),
+            getPostDetailsUseCase = GetPostDetailsUseCase(repository),
+            getCommentsForPostUseCase = GetCommentsForPostUseCase(repository)
         )
     }
 }

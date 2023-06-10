@@ -64,6 +64,7 @@ fun MainFeedScreen(
                         post ->
                     Post(
                         post = Post(
+                            id = post?.id ?:"" ,
                             username =post?.username ?: "" ,
                             imageUrl = post?.imageUrl ?: "",
                             profilePictureUrl = post?.profilePictureUrl ?: "",
@@ -71,7 +72,7 @@ fun MainFeedScreen(
                             likeCount = post?.likeCount ?: 0,
                             commentCount = post?.commentCount ?: 0
                         ), onPostClick = {
-                            onNavigate(Screen.PostDetailScreen.route)
+                            onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
                         }
                     )
                 }

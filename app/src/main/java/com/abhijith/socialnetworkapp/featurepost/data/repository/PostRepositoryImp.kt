@@ -1,6 +1,7 @@
 package com.abhijith.socialnetworkapp.featurepost.data.repository
 
 import android.net.Uri
+import android.util.Log
 import androidx.core.net.toFile
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -13,8 +14,10 @@ import com.abhijith.socialnetworkapp.core.util.SimpleResource
 import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.pagesource.PostSource
 import com.abhijith.socialnetworkapp.core.data.remote.PostApi
+import com.abhijith.socialnetworkapp.core.domain.models.Comment
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreatePostRequest
 import com.abhijith.socialnetworkapp.featurepost.domain.repository.PostRepository
+import com.abhijith.socialnetworkapp.featureprofile.data.remote.request.FollowUpdateRequest
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -59,6 +62,38 @@ class PostRepositoryImp(
             }
 
         } catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
+    }
+
+    override suspend fun getPostDetails(postId: String): Resource<Post> {
+        return try {
+            Log.d("POSTDETAIL", "Before")
+            val response = api.getPostDetails(postId = postId)
+            Log.d("POSTDETAIL", "${response}")
+            if (response.successful) {
+                Resource.Success(response.data)
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(id = R.string.error_unknown))
+            }
+        } catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
+    }
+
+    override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> {
+        return try {
+            val comments = api.getCommentsForPost(postId).map {
+                it.toComment()
+            }
+            Resource.Success(comments)
+        }catch (e: IOException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
         } catch (e: HttpException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))

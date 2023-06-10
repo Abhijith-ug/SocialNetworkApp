@@ -10,6 +10,7 @@ object Constants {
     const val KEY_USER_ID = "userId"
     const val SHARED_PREF_NAME = "shared_pref"
 
-    const val BASE_URL  = "http://192.168.64.121:8001/"
+    const val BASE_URL  = "http://192.168.64.142:8001/"
+
 
 }

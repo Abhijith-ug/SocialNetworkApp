@@ -25,9 +25,9 @@ data class ActivityDto(
                 ActivityType.CommentedOnPost.type -> ActivityType.CommentedOnPost
                 else -> ActivityType.FollowedUser
             },
-            formattedTime = SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()).run {
-                format(timeStamp)
-            }
+                formattedTime = SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()).run {
+                    format(timeStamp)
+                }
         )
     }
 }
