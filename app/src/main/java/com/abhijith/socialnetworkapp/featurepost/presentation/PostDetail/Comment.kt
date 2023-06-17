@@ -1,6 +1,7 @@
 package com.abhijith.socialnetworkapp.featurepost.presentation.PostDetail
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -26,7 +27,8 @@ import com.abhijith.socialnetworkapp.core.util.Constants
 fun Comment(
     modifier: Modifier = Modifier,
     comment: Comment,
-    onLikeClick: (Boolean) -> Unit = {}
+    onLikeClick: (Boolean) -> Unit = {},
+    onLikedByClick:() -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -86,11 +88,14 @@ fun Comment(
                     )
                     Spacer(modifier = Modifier.height(SpaceSmall))
                     Text(
-                        text = stringResource(id = R.string.liked_by_x_people, comment.likeCount),
+                        text = stringResource(id = R.string.x_likes, comment.likeCount),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.body2,
                         color = MaterialTheme.colors.onBackground,
                         modifier = Modifier.fillMaxWidth()
+                            .clickable {
+                                onLikedByClick()
+                            }
                     )
                     
                 }

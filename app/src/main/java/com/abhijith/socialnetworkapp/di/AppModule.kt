@@ -3,8 +3,11 @@ package com.abhijith.socialnetworkapp.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import com.abhijith.socialnetworkapp.core.domain.repository.ProfileRepository
 import com.abhijith.socialnetworkapp.core.domain.usecase.GetOwnUserIdUseCase
 import com.abhijith.socialnetworkapp.core.util.Constants
+import com.abhijith.socialnetworkapp.core.util.DefaultPostLiker
+import com.abhijith.socialnetworkapp.core.util.PostLiker
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -43,6 +46,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun providePostLiker():PostLiker{
+        return DefaultPostLiker()
+    }
+
+    @Provides
+    @Singleton
     fun provideGson():Gson {
         return Gson()
     }
@@ -52,6 +61,8 @@ object AppModule {
     fun provideGetOwnUserIdUseCase(sharedPreferences: SharedPreferences):GetOwnUserIdUseCase{
         return GetOwnUserIdUseCase(sharedPreferences)
     }
+
+
 
 
 }

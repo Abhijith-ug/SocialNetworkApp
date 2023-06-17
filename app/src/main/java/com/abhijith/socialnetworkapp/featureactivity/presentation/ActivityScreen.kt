@@ -1,5 +1,6 @@
 package com.abhijith.socialnetworkapp.featureactivity.presentation
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,6 +55,7 @@ viewModel: ActivityViewModel = hiltViewModel()){
             ){
                 items(activities){
                     activity ->
+                    Log.d("ACTIVITT", "${activity} ")
                     activity?.let {
                         ActivityItem(activity =
                         Activity(activity.userId,

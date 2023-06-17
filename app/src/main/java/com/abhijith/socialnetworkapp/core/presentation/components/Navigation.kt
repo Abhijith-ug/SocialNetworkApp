@@ -1,5 +1,6 @@
 package com.abhijith.socialnetworkapp.core.presentation.components
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -21,7 +22,9 @@ import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.Profile
 import com.abhijith.socialnetworkapp.featureauth.presentation.register.RegisterScreen
 import com.abhijith.socialnetworkapp.featureprofile.presentation.search.SearchScreen
 import com.abhijith.socialnetworkapp.featureauth.presentation.splash.SplashScreen
+import com.abhijith.socialnetworkapp.featurepost.presentation.personlist.PersonListScreen
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
     NavHost(
@@ -115,6 +118,19 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
                 onNavigate = navController::navigate,
 
             )
+        }
+
+        composable(route = Screen.PersonalListScreen.route + "/{parentId}",
+        arguments = listOf(
+            navArgument("parentId"){
+                type = NavType.StringType
+            }
+        )
+        ){
+            PersonListScreen(
+            onNavigateUp = navController::navigateUp,
+            onNavigate = navController::navigate,
+            scaffoldState = scaffoldState)
         }
 
     }

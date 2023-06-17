@@ -3,6 +3,7 @@ package com.abhijith.socialnetworkapp.featurepost.presentation.PostDetail
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,6 +38,7 @@ import com.abhijith.socialnetworkapp.core.presentation.ui.theme.*
 import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
 import com.abhijith.socialnetworkapp.core.presentation.util.asString
 import com.abhijith.socialnetworkapp.core.util.Constants
+import com.abhijith.socialnetworkapp.core.util.Screen
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalCoilApi::class)
@@ -147,11 +149,16 @@ fun PostDetailScreen(
                                     Spacer(modifier = Modifier.height(SpaceMedium))
                                     Text(
                                         text = stringResource(
-                                            id = R.string.liked_by_x_people,
+                                            id = R.string.x_likes,
                                             post.likeCount
                                         ),
                                         fontWeight = FontWeight.Bold,
-                                        style = MaterialTheme.typography.body2
+                                        style = MaterialTheme.typography.body2,
+                                        modifier = Modifier.clickable {
+                                            onNavigate(
+                                                Screen.PersonalListScreen.route + "/${post.id}"
+                                            )
+                                        }
                                     )
                                 }
                             }
@@ -189,6 +196,9 @@ fun PostDetailScreen(
                     comment = comment,
                     onLikeClick = {
                         viewModel.onEvent(PostDetailEvent.LikeComment(comment.id))
+                    },
+                    onLikedByClick = {
+                        onNavigate(Screen.PersonalListScreen.route + "/${comment.id}")
                     }
                 )
             }

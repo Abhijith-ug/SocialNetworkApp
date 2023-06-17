@@ -1,10 +1,11 @@
 package com.abhijith.socialnetworkapp.featurepost.data.datasource.pagesource
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.util.Constants
-import com.abhijith.socialnetworkapp.core.data.remote.PostApi
+import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.PostApi
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -20,6 +21,7 @@ class PostSource(
             val nextPage = params.key ?: 0
             val posts = when (source) {
                 is Source.Follows -> {
+                    Log.d("GETPOSTFORFOLLOW", "load: ")
                     api.getPostForFollows(
                         page = nextPage,
                         pageSize = Constants.DEFAULT_PAGE_SIZE
@@ -32,6 +34,7 @@ class PostSource(
                 )
 
             }
+            Log.d("GETPOSTFORFOLLOW", "${posts} ")
 
             LoadResult.Page(
                 data = posts,

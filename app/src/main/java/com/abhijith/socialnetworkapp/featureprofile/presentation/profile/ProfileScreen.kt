@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -36,6 +37,7 @@ import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.domain.models.User
 import com.abhijith.socialnetworkapp.core.presentation.components.Post
+import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceMedium
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceSmall
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.profilePictureSizeLarge
@@ -44,6 +46,7 @@ import com.abhijith.socialnetworkapp.core.presentation.util.asString
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Screen
 import com.abhijith.socialnetworkapp.core.util.toPx
+import com.abhijith.socialnetworkapp.featurepost.presentation.personlist.PostEvent
 import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.components.BannerSection
 import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.components.ProfileHeaderSection
 import kotlinx.coroutines.flow.collectLatest
@@ -57,7 +60,7 @@ fun ProfileScreen(
     profilePictureSize: Dp = profilePictureSizeLarge,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val posts = viewModel.posts.collectAsLazyPagingItems()
+    val pagingState = viewModel.pagingState.value
 
     val lazyListState = rememberLazyListState()
     val toolbarState = viewModel.toolbarState.value
@@ -104,6 +107,7 @@ fun ProfileScreen(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
+        viewModel.setExpandedRatio(1f)
         viewModel.getProfile(userId)
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
@@ -112,7 +116,9 @@ fun ProfileScreen(
                         message = event.uiText.asString(context)
                     )
                 }
-                else -> null
+                is PostEvent.onLiked -> {
+
+                }
             }
         }
     }
@@ -152,28 +158,33 @@ fun ProfileScreen(
                     )
                 }
             }
-            items(posts) { post ->
+            items(pagingState.items.size) { i ->
+                val post = pagingState.items[i].copy(
+                    username = "Hello",
+                    imageUrl = Constants.BASE_URL + pagingState.items[i].imageUrl,
+                    profilePictureUrl = Constants.BASE_URL + pagingState.items[i].imageUrl
+                )
+                Log.d("PAGINGPOST", "${post}")
+                if (i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
+                    viewModel.loadNextPosts()
+                }
                 Spacer(
                     modifier = Modifier
-                        .height(SpaceMedium)
+                        .height(SpaceSmall)
                 )
                 Post(
-                    post = Post(
-                        id = post?.id?:"",
-                        userId = post?.userId?:"",
-                        isLiked = post?.isLiked?:false,
-                        username = post?.username ?: "",
-                        imageUrl = "${Constants.BASE_URL}${post?.imageUrl}" ?: "",
-                        profilePictureUrl = "${Constants.BASE_URL}${post?.profilePictureUrl}" ?: "",
-                        description = post?.description ?: "",
-                        likeCount = post?.likeCount ?: 0,
-                        commentCount = post?.commentCount ?: 0,
-                    ),
+                    post = post,
                     showProfileImage = false,
                     onPostClick = {
-                        onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
+                        onNavigate(Screen.PostDetailScreen.route + "/${post.id}")
                     },
+                    onLikeClick = {
+                        viewModel.onEvent(ProfileEvent.LikePost(post.id))
+                    }
                 )
+            }
+            item { 
+                Spacer(modifier = Modifier.height(90.dp))
             }
         }
         Column(

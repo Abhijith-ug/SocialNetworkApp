@@ -13,13 +13,13 @@ import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.core.util.SimpleResource
 import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.pagesource.PostSource
-import com.abhijith.socialnetworkapp.core.data.remote.PostApi
+import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.PostApi
 import com.abhijith.socialnetworkapp.core.domain.models.Comment
+import com.abhijith.socialnetworkapp.core.domain.models.UserItem
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreateCommentRequest
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.CreatePostRequest
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.request.LikeUpdateRequest
 import com.abhijith.socialnetworkapp.featurepost.domain.repository.PostRepository
-import com.abhijith.socialnetworkapp.featureprofile.data.remote.request.FollowUpdateRequest
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -32,10 +32,20 @@ class PostRepositoryImp(
     private val gson: Gson,
 ) : PostRepository {
 
-    override val posts: Flow<PagingData<Post>>
-        get() = Pager(PagingConfig(pageSize = Constants.DEFAULT_PAGE_SIZE)) {
-            PostSource(api, PostSource.Source.Follows)
-        }.flow
+    override suspend fun getPostsForFollows(page: Int, pageSize: Int): Resource<List<Post>> {
+        return try {
+            val posts = api.getPostForFollows(
+                page = page, pageSize = pageSize)
+            Resource.Success(
+                data = posts
+            )
+        } catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
+    }
+
 
     override suspend fun createPost(description: String, imageUri: Uri): SimpleResource {
         val request = CreatePostRequest(description)
@@ -163,4 +173,17 @@ class PostRepositoryImp(
         } catch (e: HttpException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
         }     }
+
+    override suspend fun getLikesForParent(parentId: String): Resource<List<UserItem>> {
+        return try {
+            val response = api.getLikesFoParent(
+                parentId = parentId,)
+                Resource.Success(response.map {
+                    it.toUserItem() })
+        } catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
+    }
 }

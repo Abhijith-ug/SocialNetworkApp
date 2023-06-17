@@ -2,9 +2,7 @@ package com.abhijith.socialnetworkapp.featureactivity.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.abhijith.socialnetworkapp.core.data.remote.PostApi
 import com.abhijith.socialnetworkapp.core.domain.models.Activity
-import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.featureactivity.data.remote.ActivityApi
 import retrofit2.HttpException

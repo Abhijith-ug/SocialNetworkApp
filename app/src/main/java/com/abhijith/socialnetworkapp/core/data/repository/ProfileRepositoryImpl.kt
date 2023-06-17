@@ -1,4 +1,4 @@
-package com.abhijith.socialnetworkapp.featureprofile.data.repository
+package com.abhijith.socialnetworkapp.core.data.repository
 
 import android.net.Uri
 import android.util.Log
@@ -7,7 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.abhijith.socialnetworkapp.R
-import com.abhijith.socialnetworkapp.core.data.remote.PostApi
+import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.PostApi
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.domain.models.UserItem
 import com.abhijith.socialnetworkapp.core.util.Constants
@@ -21,7 +21,7 @@ import com.abhijith.socialnetworkapp.featureprofile.data.remote.request.FollowUp
 import com.abhijith.socialnetworkapp.featureprofile.domain.model.Profile
 import com.abhijith.socialnetworkapp.featureprofile.domain.model.Skill
 import com.abhijith.socialnetworkapp.featureprofile.domain.model.UpdateProfileData
-import com.abhijith.socialnetworkapp.featureprofile.domain.repository.ProfileRepository
+import com.abhijith.socialnetworkapp.core.domain.repository.ProfileRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -31,8 +31,8 @@ import java.io.IOException
 
 class ProfileRepositoryImpl(
     private val profileApi: ProfileApi,
-    private val postApi:PostApi,
-    private val gson:Gson
+    private val postApi: PostApi,
+    private val gson: Gson
 ) : ProfileRepository {
 
 
@@ -64,8 +64,8 @@ class ProfileRepositoryImpl(
         bannerImageUri: Uri?,
         profilePictureUri: Uri?
     ): SimpleResource {
-             val bannerFile = bannerImageUri?.toFile()
-             val profilePictureFile = profilePictureUri?.toFile()
+        val bannerFile = bannerImageUri?.toFile()
+        val profilePictureFile = profilePictureUri?.toFile()
         return try {
             val response = profileApi.updateProfile(
                 bannerImage = bannerFile?.let {
@@ -94,9 +94,9 @@ class ProfileRepositoryImpl(
                     )
 
             )
-            if(response.successful){
+            if (response.successful) {
                 Resource.Success(Unit)
-            }else {
+            } else {
                 response.message?.let { msg ->
                     Resource.Error(UiText.DynamicString(msg))
                 } ?: Resource.Error(UiText.StringResource(id = R.string.error_unknown))
@@ -108,7 +108,6 @@ class ProfileRepositoryImpl(
         }
 
 
-
     }
 
 
@@ -116,12 +115,30 @@ class ProfileRepositoryImpl(
         return try {
             val response = profileApi.getSkills()
             Resource.Success(
-                    data = response.map {
-                        it.toSkill()
-                    }
-                )
-            }
-         catch (e: IOException) {
+                data = response.map {
+                    it.toSkill()
+                }
+            )
+        } catch (e: IOException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
+        } catch (e: HttpException) {
+            Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
+        }
+    }
+
+    override suspend fun getPostPaged(
+        page: Int,
+        pageSize: Int,
+        userId: String
+    ): Resource<List<Post>> {
+        return try {
+            val posts = postApi.getPostsForProfile(userId = userId,
+            page = page, pageSize = pageSize)
+            Log.d("Posttttt", "${posts}")
+            Resource.Success(
+                data = posts
+            )
+        } catch (e: IOException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
         } catch (e: HttpException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
@@ -129,13 +146,6 @@ class ProfileRepositoryImpl(
     }
 
 
-
-
-    override fun getPostPaged(userId: String): Flow<PagingData<Post>> {
-        return  Pager(PagingConfig(pageSize = Constants.DEFAULT_PAGE_SIZE)){
-            PostSource(postApi,PostSource.Source.Profile(userId))
-        }.flow
-    }
 
     override suspend fun searchUser(query: String): Resource<List<UserItem>> {
         return try {
@@ -148,8 +158,7 @@ class ProfileRepositoryImpl(
                     )
                 }
             )
-        }
-        catch (e: IOException) {
+        } catch (e: IOException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.error_couldnt_reach_server))
         } catch (e: HttpException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))

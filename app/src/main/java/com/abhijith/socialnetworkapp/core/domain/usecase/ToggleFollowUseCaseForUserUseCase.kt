@@ -1,7 +1,7 @@
-package com.abhijith.socialnetworkapp.featureprofile.domain.use_case
+package com.abhijith.socialnetworkapp.core.domain.usecase
 
 import com.abhijith.socialnetworkapp.core.util.SimpleResource
-import com.abhijith.socialnetworkapp.featureprofile.domain.repository.ProfileRepository
+import com.abhijith.socialnetworkapp.core.domain.repository.ProfileRepository
 
 class ToggleFollowUseCaseForUserUseCase(
     private val repository: ProfileRepository

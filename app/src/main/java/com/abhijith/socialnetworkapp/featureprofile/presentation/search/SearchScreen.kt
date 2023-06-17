@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.domain.models.User
+import com.abhijith.socialnetworkapp.core.domain.models.UserItem
 import com.abhijith.socialnetworkapp.core.presentation.components.StandardTextField
 import com.abhijith.socialnetworkapp.core.presentation.components.StandardToolbar
 import com.abhijith.socialnetworkapp.core.presentation.components.UserProfileItem
@@ -64,35 +65,27 @@ fun SearchScreen(
                 Spacer(modifier = Modifier.height(SpaceLarge))
 
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-
                     items(state.userItems) { user ->
-                        Log.d("UserID",user.userId)
                         UserProfileItem(
-                            user = User(
-                                userId = user.userId,
-                                profilePictureUrl = user.profilePictureUrl,
-                                username = user.username,
-                                description = user.bio,
-                                followerCount = 0,
-                                followingCount = 0,
-                                postCount = 0
-                            ),
+                            user = user,
                             actionIcon = {
-
-                                    IconButton(onClick = {
-                                                         viewModel.onEvent(SearchEvent.ToggleFollowState(user.userId))
+                                IconButton(
+                                    onClick = {
+                                        viewModel.onEvent(SearchEvent.ToggleFollowState(user.userId))
                                     }, modifier = Modifier.size(
-                                        IconSizeMedium)) {
-                                        Icon(
-                                            imageVector = if (user.isFollowing){
-                                                                               Icons.Default.PersonRemove
-                                                                               }else{
-                                                                                    Icons.Default.PersonAdd
-                                                                                    },
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colors.onBackground
-                                        )
-                                    }
+                                        IconSizeMedium
+                                    )
+                                ) {
+                                    Icon(
+                                        imageVector = if (user.isFollowing) {
+                                            Icons.Default.PersonRemove
+                                        } else {
+                                            Icons.Default.PersonAdd
+                                        },
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colors.onBackground
+                                    )
+                                }
                             },
                             onItemClick = { onNavigate(Screen.ProfileScreen.route + "?userId=${user.userId}") }
                         )

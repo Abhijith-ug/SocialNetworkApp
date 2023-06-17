@@ -45,7 +45,7 @@ fun Post(
     modifier: Modifier = Modifier,
     showProfileImage: Boolean = true,
     onPostClick: () -> Unit = {},
-    onLikeClick: () -> Unit ={},
+    onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onUsernameClick: () -> Unit = {}
@@ -82,11 +82,15 @@ fun Post(
                     .padding(SpaceMedium)
             ) {
                 Spacer(modifier = Modifier.height(SpaceMedium))
-                ActionRow(modifier = Modifier.fillMaxWidth(), username = "Abhijith",
+                ActionRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    username = "Abhijith",
+                    isLiked = post.isLiked,
                     onLikeClick = onLikeClick,
                     onCommentClick = onCommentClick,
                     onShareClick = onShareClick,
-                    onUsernameClick = onUsernameClick )
+                    onUsernameClick = onUsernameClick
+                )
                 Spacer(modifier = Modifier.height(SpaceSmall))
 
                 Text(
@@ -115,7 +119,7 @@ fun Post(
                 ) {
                     Text(
                         text = stringResource(
-                            id = R.string.liked_by_x_people,
+                            id = R.string.x_likes,
 
                             post.likeCount
                         ), fontSize = 16.sp,

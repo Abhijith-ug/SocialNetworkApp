@@ -1,6 +1,7 @@
-package com.abhijith.socialnetworkapp.core.data.remote
+package com.abhijith.socialnetworkapp.featurepost.data.datasource.remote
 
 import com.abhijith.socialnetworkapp.core.data.dto.response.BasicApiResponse
+import com.abhijith.socialnetworkapp.core.data.dto.response.UserItemDto
 import com.abhijith.socialnetworkapp.core.domain.models.Comment
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.util.Resource
@@ -59,4 +60,9 @@ interface PostApi {
         @Query("parentId") parentId:String,
         @Query("parentType") parentType:Int
     ):BasicApiResponse<Unit>
+
+    @GET("/api/like/parent")
+    suspend fun getLikesFoParent(
+        @Query("parentID") parentId: String
+    ):List<UserItemDto>
 }

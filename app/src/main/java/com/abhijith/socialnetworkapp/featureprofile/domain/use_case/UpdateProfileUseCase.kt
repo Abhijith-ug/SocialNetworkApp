@@ -6,11 +6,11 @@ import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.core.util.SimpleResource
 import com.abhijith.socialnetworkapp.core.util.UiText
 import com.abhijith.socialnetworkapp.featureprofile.domain.model.UpdateProfileData
-import com.abhijith.socialnetworkapp.featureprofile.domain.repository.ProfileRepository
+import com.abhijith.socialnetworkapp.core.domain.repository.ProfileRepository
 import com.abhijith.socialnetworkapp.featureprofile.domain.util.ProfileConstants
 
 class UpdateProfileUseCase(
-    private val repository:ProfileRepository
+    private val repository: ProfileRepository
 ) {
 
     suspend operator fun invoke(
@@ -24,20 +24,20 @@ class UpdateProfileUseCase(
                 uiText = UiText.StringResource(R.string.error_username_empty)
             )
         }
-        val isValidGitHubUrl = ProfileConstants.GITHUB_PROFILE_REGEX.matches(updateProfileData.gitHubUrl)
+        val isValidGitHubUrl = updateProfileData.gitHubUrl.isBlank()||ProfileConstants.GITHUB_PROFILE_REGEX.matches(updateProfileData.gitHubUrl)
         if (!isValidGitHubUrl){
             return Resource.Error(
                 uiText = UiText.StringResource(R.string.error_invalid_github_url)
             )
         }
-        val isValidInstagramUrl = ProfileConstants.INSTAGRAM_PROFILE_REGEX.matches(updateProfileData.instagramUrl)
+        val isValidInstagramUrl = updateProfileData.instagramUrl.isBlank()||ProfileConstants.INSTAGRAM_PROFILE_REGEX.matches(updateProfileData.instagramUrl)
         if (!isValidInstagramUrl){
             return Resource.Error(
                 uiText = UiText.StringResource(R.string.error_invalid_instagram_url)
             )
         }
-        val isValidLinkedInUrl = ProfileConstants.LINKED_IN_PROFILE_REGEX.matches(updateProfileData.linkedInUrl)
-        if (!isValidInstagramUrl){
+        val isValidLinkedInUrl = updateProfileData.linkedInUrl.isBlank()||ProfileConstants.LINKED_IN_PROFILE_REGEX.matches(updateProfileData.linkedInUrl)
+        if (!isValidLinkedInUrl){
             return Resource.Error(
                 uiText = UiText.StringResource(R.string.error_invalid_linkedIn_url)
             )

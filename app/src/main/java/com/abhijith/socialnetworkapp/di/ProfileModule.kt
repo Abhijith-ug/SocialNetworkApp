@@ -1,10 +1,12 @@
 package com.abhijith.socialnetworkapp.di
 
-import com.abhijith.socialnetworkapp.core.data.remote.PostApi
+import com.abhijith.socialnetworkapp.core.domain.usecase.ToggleFollowUseCaseForUserUseCase
+import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.PostApi
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.featureprofile.data.remote.ProfileApi
-import com.abhijith.socialnetworkapp.featureprofile.data.repository.ProfileRepositoryImpl
-import com.abhijith.socialnetworkapp.featureprofile.domain.repository.ProfileRepository
+import com.abhijith.socialnetworkapp.core.data.repository.ProfileRepositoryImpl
+import com.abhijith.socialnetworkapp.core.domain.repository.ProfileRepository
+import com.abhijith.socialnetworkapp.core.domain.usecase.GetOwnUserIdUseCase
 import com.abhijith.socialnetworkapp.featureprofile.domain.use_case.*
 import com.google.gson.Gson
 import dagger.Module
@@ -50,5 +52,10 @@ object ProfileModule {
             searchUserUseCase = SearchUserUseCase(repository),
             toggleFollowUseCaseForUserUseCase = ToggleFollowUseCaseForUserUseCase(repository)
         )
+    }
+    @Provides
+    @Singleton
+    fun provideToggleFollowForUserUseCase(repository: ProfileRepository): ToggleFollowUseCaseForUserUseCase {
+        return ToggleFollowUseCaseForUserUseCase(repository)
     }
 }

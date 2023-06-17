@@ -1,9 +1,11 @@
 package com.abhijith.socialnetworkapp.featurepost.domain.repository
 
 import android.net.Uri
+import androidx.compose.foundation.pager.PageSize
 import androidx.paging.PagingData
 import com.abhijith.socialnetworkapp.core.domain.models.Comment
 import com.abhijith.socialnetworkapp.core.domain.models.Post
+import com.abhijith.socialnetworkapp.core.domain.models.UserItem
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Resource
 import com.abhijith.socialnetworkapp.core.util.SimpleResource
@@ -12,8 +14,7 @@ import java.io.File
 
 interface PostRepository {
 
-  val posts: Flow<PagingData<Post>>
-
+   suspend fun getPostsForFollows(page:Int,pageSize:Int):Resource<List<Post>>
    suspend fun createPost(description:String,imageUri:Uri): SimpleResource
 
 
@@ -26,6 +27,8 @@ interface PostRepository {
    suspend fun likeParent(parentId:String,parentType:Int):SimpleResource
 
     suspend fun unLikeParent(parentId:String,parentType:Int):SimpleResource
+
+    suspend fun getLikesForParent(parentId:String): Resource<List<UserItem>>
 
 
 }
