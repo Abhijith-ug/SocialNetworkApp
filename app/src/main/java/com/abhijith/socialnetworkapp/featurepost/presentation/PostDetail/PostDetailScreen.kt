@@ -44,6 +44,7 @@ import com.abhijith.socialnetworkapp.core.presentation.util.asString
 import com.abhijith.socialnetworkapp.core.presentation.util.showKeyboard
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Screen
+import com.abhijith.socialnetworkapp.core.util.sendSharePostIntent
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalCoilApi::class)
@@ -148,7 +149,7 @@ fun PostDetailScreen(
                                             focusRequester.requestFocus()
                                         },
                                         onShareClick = {
-
+                                            context.sendSharePostIntent(post.id)
                                         },
                                         onUsernameClick = {
                                                           onNavigate(Screen.ProfileScreen.route + "?userId=${post.userId}")

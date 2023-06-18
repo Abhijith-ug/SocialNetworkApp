@@ -1,14 +1,12 @@
 package com.abhijith.socialnetworkapp.core.presentation.components
 
+import android.content.Intent
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.util.Screen
 import com.abhijith.socialnetworkapp.featurepost.presentation.mainFeed.MainFeedScreen
@@ -87,7 +85,9 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
                 onLogout = {
                            navController.navigate(
                                route = Screen.LoginScreen.route,
-                               )
+                               ){
+                               popUpTo(0)
+                           }
                 },
                 onNavigate = navController::navigate, scaffoldState = scaffoldState,
                 userId = it.arguments?.getString("userId"),
@@ -129,9 +129,16 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
                 type = NavType.BoolType
                 defaultValue = false
             }
-        )
+        ),
+            deepLinks = listOf(
+                navDeepLink {
+                    action = Intent.ACTION_VIEW
+                    uriPattern = "https://abhijith.com/{postId}"
+                }
+            )
         ) {
             val shouldShowKeyboard = it.arguments?.getBoolean("shouldShowKeyboard") ?:false
+            val postId = it.arguments?.getString("postId")
             PostDetailScreen(
                 scaffoldState  = scaffoldState,
                 onNavigateUp = navController::navigateUp,

@@ -48,6 +48,7 @@ import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
 import com.abhijith.socialnetworkapp.core.presentation.util.asString
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Screen
+import com.abhijith.socialnetworkapp.core.util.sendSharePostIntent
 import com.abhijith.socialnetworkapp.core.util.toPx
 import com.abhijith.socialnetworkapp.featurepost.presentation.personlist.PostEvent
 import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.components.BannerSection
@@ -190,6 +191,9 @@ fun ProfileScreen(
                     onCommentClick = {
                         onNavigate(Screen.PostDetailScreen.route + "/${post.id}?shouldShowKeyboard=true")
 
+                    },
+                    onShareClick = {
+                        context.sendSharePostIntent(post.id)
                     }
                 )
             }

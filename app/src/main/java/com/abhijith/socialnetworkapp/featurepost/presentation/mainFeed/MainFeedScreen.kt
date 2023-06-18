@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import com.abhijith.socialnetworkapp.R
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Screen
+import com.abhijith.socialnetworkapp.core.util.sendSharePostIntent
 import com.abhijith.socialnetworkapp.featurepost.presentation.personlist.PostEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -39,6 +41,7 @@ fun MainFeedScreen(
 ) {
 
     val pagingState = viewModel.pagingState.value
+    val context = LocalContext.current
     LaunchedEffect(key1 = true){
         viewModel.eventFlow.collectLatest {
             event ->
@@ -101,6 +104,10 @@ fun MainFeedScreen(
                         },
                         onLikeClick = {
                               viewModel.onEvent(MainFeedEvents.LikedPost(post?.id ?:""))
+                        },
+                        onShareClick = {
+                            context.sendSharePostIntent(post.id)
+
                         }
 
                     )
