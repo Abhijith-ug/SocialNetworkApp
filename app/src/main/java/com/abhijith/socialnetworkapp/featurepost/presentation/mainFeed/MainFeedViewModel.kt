@@ -23,7 +23,8 @@ import java.util.concurrent.Flow
 import javax.inject.Inject
 @HiltViewModel
 class MainFeedViewModel @Inject constructor(
-    private val postUseCases: PostUseCases
+    private val postUseCases: PostUseCases,
+    private val postLiker: PostLiker
 ) :ViewModel(){
 
 
@@ -74,7 +75,9 @@ class MainFeedViewModel @Inject constructor(
     fun onEvent(event:MainFeedEvents){
         when(event){
             is MainFeedEvents.LikedPost -> {
-
+              toggleLikeForParent(
+                  event.postId
+              )
             }
 
         }
@@ -86,22 +89,26 @@ class MainFeedViewModel @Inject constructor(
         }
     }
 
-    private fun toggleLikeForParent(parentId:String,isLiked:Boolean){
+    private fun toggleLikeForParent(parentId:String){
         viewModelScope.launch {
-            val result = postUseCases.toggleLikeForParentUseCase(
-                parentId = parentId,
-                parentType = ParentType.Post.type,
-                isLiked = isLiked
-            )
-            when(result){
-                is Resource.Success -> {
-                     _eventFlow.emit(PostEvent.onLiked)
-                }
+          postLiker.toggleLike(
+              posts = pagingState.value.items,
+              parentId = parentId,
+              onRequest = {isLiked ->
+                  postUseCases.toggleLikeForParentUseCase(
+                      parentId = parentId,
+                      parentType = ParentType.Post.type,
+                      isLiked = isLiked
 
-                is Resource.Error -> {
-
-                }
-            }
+                  )
+              },
+              onStateUpdated = {
+                  posts ->
+                  _pagingState.value = pagingState.value.copy(
+                      items = posts
+                  )
+              }
+          )
         }
     }
 }

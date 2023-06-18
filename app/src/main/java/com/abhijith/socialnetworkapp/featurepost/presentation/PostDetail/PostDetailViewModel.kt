@@ -118,22 +118,35 @@ class PostDetailViewModel @Inject constructor(
 
     private fun toggleLikeForParent(parentId:String,parentType:Int,isLiked:Boolean){
         viewModelScope.launch {
+            val currentLikeCount =  state.value.post?.likeCount?:0
             when(parentType){
                 ParentType.Post.type -> {
+                    val post = state.value.post
                     _state.value = state.value.copy(
                         post = state.value.post?.copy(
-                            isLiked = !isLiked
+                            isLiked = !isLiked,
+                            likeCount = if (isLiked){
+                                post?.likeCount?.minus(1)?:0
+                            }else{
+                                post?.likeCount?.plus(1)?:0
+                            }
                         )
                     )
                 }
                 ParentType.Comment.type -> {
                         _state.value = state.value.copy(
                             comments = state.value.comments.map {
-                                if (it.id == parentId){
-                                    it.copy(
-                                        isLiked = !isLiked
+                                comment ->
+                                if (comment.id == parentId){
+                                    comment.copy(
+                                        isLiked = !isLiked,
+                                        likeCount = if (isLiked){
+                                            comment.likeCount - 1
+                                        }else{
+                                            comment.likeCount + 1
+                                        }
                                     )
-                                }else it
+                                }else comment
                             }
                         )
                 }
@@ -148,20 +161,27 @@ class PostDetailViewModel @Inject constructor(
                 is Resource.Error -> {
                     when(parentType){
                         ParentType.Post.type -> {
+                            val post = state.value.post
                             _state.value = state.value.copy(
                                 post = state.value.post?.copy(
-                                    isLiked = isLiked
+                                    isLiked = isLiked,
+                                    likeCount = currentLikeCount
+
                                 )
                             )
                         }
                         ParentType.Comment.type -> {
                             _state.value = state.value.copy(
                                 comments = state.value.comments.map {
-                                    if (it.id == parentId){
-                                        it.copy(
-                                            isLiked = !isLiked
+                                    comment ->
+                                    if (comment.id == parentId){
+                                        comment.copy(
+                                            isLiked = !isLiked,
+                                            likeCount = if (comment.isLiked){
+                                                comment.likeCount - 1
+                                            }else comment.likeCount + 1
                                         )
-                                    }else it
+                                    }else comment
                                 }
                             )
                         }

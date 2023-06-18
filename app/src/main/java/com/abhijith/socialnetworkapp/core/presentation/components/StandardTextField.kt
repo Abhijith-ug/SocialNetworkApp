@@ -11,6 +11,8 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import com.abhijith.socialnetworkapp.R
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,6 +39,7 @@ fun StandardTextField(
     showPasswordToggle: Boolean = false,
     onPasswordToggleClick: (Boolean) -> Unit = {},
     onValueChange: (String) -> Unit,
+    focusRequester: FocusRequester = FocusRequester()
 ) {
 
 
@@ -61,7 +64,8 @@ fun StandardTextField(
             } else {
                 VisualTransformation.None
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .focusRequester(focusRequester = focusRequester),
             singleLine = singleLine,
             leadingIcon = if (leadingIcon != null) {
                 {

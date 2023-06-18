@@ -1,5 +1,7 @@
 package com.abhijith.socialnetworkapp.featurepost.presentation.PostDetail
 
+import android.content.Context
+import android.inputmethodservice.InputMethodService
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,10 +16,12 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -37,6 +41,7 @@ import com.abhijith.socialnetworkapp.core.presentation.components.StandardToolba
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.*
 import com.abhijith.socialnetworkapp.core.presentation.util.UiEvent
 import com.abhijith.socialnetworkapp.core.presentation.util.asString
+import com.abhijith.socialnetworkapp.core.presentation.util.showKeyboard
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Screen
 import kotlinx.coroutines.flow.collectLatest
@@ -47,12 +52,20 @@ fun PostDetailScreen(
     scaffoldState: ScaffoldState,
     onNavigate: (String) -> Unit = {},
     onNavigateUp: () -> Unit = {},
-    viewModel: PostDetailViewModel = hiltViewModel()
+    viewModel: PostDetailViewModel = hiltViewModel(),
+    shouldShowKeyboard:Boolean = false
 ) {
     val state = viewModel.state.value
     val commentTextFieldState = viewModel.commentTextFieldState.value
+    val focusRequester = remember{
+        FocusRequester()
+    }
     val context = LocalContext.current
     LaunchedEffect(key1 = true){
+        if (shouldShowKeyboard){
+            context.showKeyboard()
+            focusRequester.requestFocus()
+        }
         viewModel.eventFlow.collectLatest {
             event ->
             when(event){
@@ -131,7 +144,8 @@ fun PostDetailScreen(
 
                                         },
                                         onCommentClick = {
-
+                                            context.showKeyboard()
+                                            focusRequester.requestFocus()
                                         },
                                         onShareClick = {
 
@@ -216,7 +230,8 @@ fun PostDetailScreen(
                 onValueChange = {
                     viewModel.onEvent(PostDetailEvent.EnteredComment(it))
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                focusRequester = focusRequester
             )
             if (viewModel.commentState.value.isLoading) {
                 CircularProgressIndicator(

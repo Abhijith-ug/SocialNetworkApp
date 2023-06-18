@@ -23,6 +23,7 @@ import com.abhijith.socialnetworkapp.core.domain.models.Post
 import com.abhijith.socialnetworkapp.core.presentation.components.Post
 import com.abhijith.socialnetworkapp.core.presentation.components.StandardToolbar
 import com.abhijith.socialnetworkapp.R
+import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceLarge
 import com.abhijith.socialnetworkapp.core.util.Constants
 import com.abhijith.socialnetworkapp.core.util.Screen
 import com.abhijith.socialnetworkapp.featurepost.presentation.personlist.PostEvent
@@ -77,23 +78,30 @@ fun MainFeedScreen(
                     }
                     Post(
                         post = Post(
-                            id = post?.id ?:"" ,
-                            userId = post?.userId?:"",
-                            isLiked = post?.isLiked?:false,
-                            username =post?.username ?: "" ,
-                            imageUrl = Constants.BASE_URL+post?.imageUrl ?: "",
-                            profilePictureUrl = Constants.BASE_URL+ post?.profilePictureUrl ?: "",
-                            description = post?.description ?: "",
-                            likeCount = post?.likeCount ?: 0,
-                            commentCount = post?.commentCount ?: 0
+                            id = post.id  ,
+                            userId = post.userId,
+                            isLiked = post.isLiked,
+                            username =post.username ,
+                            imageUrl = Constants.BASE_URL+post.imageUrl ,
+                            profilePictureUrl = Constants.BASE_URL+ post.profilePictureUrl ,
+                            description = post.description,
+                            likeCount = post.likeCount ,
+                            commentCount = post.commentCount
                         ), onPostClick = {
-                            onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
+                            onNavigate(Screen.PostDetailScreen.route + "/${post.id}")
+                        },
+                        onCommentClick = {
+                            onNavigate(Screen.PostDetailScreen.route + "/${post.id}?shouldShowKeyboard=true")
+
                         },
                         onLikeClick = {
                               viewModel.onEvent(MainFeedEvents.LikedPost(post?.id ?:""))
                         }
 
                     )
+                    if(i<pagingState.items.size-1){
+                        Spacer(modifier = Modifier.height(SpaceLarge))
+                    }
                 }
 
 
