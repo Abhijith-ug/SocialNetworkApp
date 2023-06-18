@@ -1,5 +1,6 @@
 package com.abhijith.socialnetworkapp.core.data.repository
 
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toFile
@@ -32,7 +33,8 @@ import java.io.IOException
 class ProfileRepositoryImpl(
     private val profileApi: ProfileApi,
     private val postApi: PostApi,
-    private val gson: Gson
+    private val gson: Gson,
+    private val sharedPreferences: SharedPreferences
 ) : ProfileRepository {
 
 
@@ -201,6 +203,12 @@ class ProfileRepositoryImpl(
         } catch (e: HttpException) {
             Resource.Error(uiText = UiText.StringResource(id = R.string.oops_something_went_wrong))
         }
+    }
+
+    override fun logout() {
+       sharedPreferences.edit()
+           .remove(Constants.KEY_JWT_TOKEN)
+           .apply()
     }
 
 

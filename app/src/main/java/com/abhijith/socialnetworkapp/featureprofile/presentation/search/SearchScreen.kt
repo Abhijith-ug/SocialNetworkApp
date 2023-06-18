@@ -66,6 +66,7 @@ fun SearchScreen(
 
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(state.userItems) { user ->
+                        Log.d("SEARCHIMAGE", "${user.profilePictureUrl}")
                         UserProfileItem(
                             user = user,
                             actionIcon = {

@@ -40,6 +40,15 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
         composable(Screen.LoginScreen.route) {
             LoginScreen(
                 onNavigate = navController::navigate,
+                onLogin = {
+                    navController.popBackStack(
+                        route = Screen.LoginScreen.route,
+                        inclusive = true
+                    )
+                        navController.navigate(
+                            route =  Screen.MainFeedScreen.route,
+                        )
+                },
                 scaffoldState = scaffoldState
             )
         }
@@ -75,7 +84,11 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
             )
         ) {
             ProfileScreen(
-                onNavigateUp = navController::navigateUp,
+                onLogout = {
+                           navController.navigate(
+                               route = Screen.LoginScreen.route,
+                               )
+                },
                 onNavigate = navController::navigate, scaffoldState = scaffoldState,
                 userId = it.arguments?.getString("userId"),
             )

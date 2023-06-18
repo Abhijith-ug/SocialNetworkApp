@@ -1,5 +1,6 @@
 package com.abhijith.socialnetworkapp.di
 
+import android.content.SharedPreferences
 import com.abhijith.socialnetworkapp.core.domain.usecase.ToggleFollowUseCaseForUserUseCase
 import com.abhijith.socialnetworkapp.featurepost.data.datasource.remote.PostApi
 import com.abhijith.socialnetworkapp.core.util.Constants
@@ -36,8 +37,8 @@ object ProfileModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(profileApi: ProfileApi, postApi: PostApi, gson: Gson): ProfileRepository {
-        return ProfileRepositoryImpl(profileApi,postApi,gson)
+    fun provideProfileRepository(profileApi: ProfileApi, postApi: PostApi, gson: Gson,sharedPreferences: SharedPreferences): ProfileRepository {
+        return ProfileRepositoryImpl(profileApi,postApi,gson,sharedPreferences)
     }
 
     @Provides
@@ -50,7 +51,8 @@ object ProfileModule {
             setSkillSelectedUseCase = SetSkillSelectedUseCase( ),
             getPostsForProfileUseCase = GetPostsForProfileUseCase(repository),
             searchUserUseCase = SearchUserUseCase(repository),
-            toggleFollowUseCaseForUserUseCase = ToggleFollowUseCaseForUserUseCase(repository)
+            toggleFollowUseCaseForUserUseCase = ToggleFollowUseCaseForUserUseCase(repository),
+            logoutUseCase = LogoutUseCase(repository)
         )
     }
     @Provides

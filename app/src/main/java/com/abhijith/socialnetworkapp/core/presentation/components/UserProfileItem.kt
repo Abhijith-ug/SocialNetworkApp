@@ -1,5 +1,6 @@
 package com.abhijith.socialnetworkapp.core.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -22,6 +23,7 @@ import com.abhijith.socialnetworkapp.core.presentation.ui.theme.SpaceSmall
 import com.abhijith.socialnetworkapp.core.presentation.ui.theme.profilePictureSizeBtwSmallMed
 import com.abhijith.socialnetworkapp.core.domain.models.User
 import com.abhijith.socialnetworkapp.core.domain.models.UserItem
+import com.abhijith.socialnetworkapp.core.presentation.ui.theme.profilePictureSizeMedium
 import com.abhijith.socialnetworkapp.core.util.Constants
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalCoilApi::class)
@@ -48,14 +50,14 @@ fun  UserProfileItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = rememberImagePainter(data = "${Constants.BASE_URL}"+user.profilePictureUrl,
+                painter = rememberImagePainter(data = user.profilePictureUrl,
                     builder = {
                         crossfade(true)
                     }),
                 contentDescription = null,
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(profilePictureSizeBtwSmallMed),
+                    .size(profilePictureSizeMedium),
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(SpaceSmall))

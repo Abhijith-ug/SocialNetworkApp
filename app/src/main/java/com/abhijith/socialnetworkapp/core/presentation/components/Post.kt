@@ -84,7 +84,7 @@ fun Post(
                 Spacer(modifier = Modifier.height(SpaceMedium))
                 ActionRow(
                     modifier = Modifier.fillMaxWidth(),
-                    username = "Abhijith",
+                    username = post.username,
                     isLiked = post.isLiked,
                     onLikeClick = onLikeClick,
                     onCommentClick = onCommentClick,
