@@ -82,4 +82,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="share_intent_text">Hey I found a great post check it out\n%s</string>
+    <string name="error_not_logged_in">Oops! please login before doing that</string>
+    <string name="enter_a_message">Message...</string>
 </resources>

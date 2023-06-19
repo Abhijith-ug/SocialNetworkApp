@@ -155,9 +155,7 @@ class ProfileRepositoryImpl(
             val searchResult = response
             Resource.Success(
                 data = response.map {
-                    it.toUserItem().copy(
-                        profilePictureUrl = "${BASE_URL}${it.profilePictureUrl}"
-                    )
+                    it.toUserItem()
                 }
             )
         } catch (e: IOException) {

@@ -28,7 +28,6 @@ class DefaultPostLiker:PostLiker {
         onStateUpdated(newPosts)
         when ( onRequest(currentlyLiked)) {
             is Resource.Success -> Unit
-
             is Resource.Error -> {
                 val oldPosts = posts.map { post ->
                     if (post.id == parentId) {

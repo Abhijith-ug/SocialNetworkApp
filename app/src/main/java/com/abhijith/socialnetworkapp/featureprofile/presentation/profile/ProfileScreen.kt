@@ -167,7 +167,7 @@ fun ProfileScreen(
             }
             items(pagingState.items.size) { i ->
                 val post = pagingState.items[i].copy(
-                    username = "Hello",
+                    username = pagingState.items[i].username,
                     imageUrl = Constants.BASE_URL + pagingState.items[i].imageUrl,
                     profilePictureUrl = Constants.BASE_URL + pagingState.items[i].imageUrl
                 )

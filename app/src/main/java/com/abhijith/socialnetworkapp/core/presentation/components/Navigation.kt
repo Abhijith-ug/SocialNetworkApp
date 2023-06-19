@@ -20,6 +20,7 @@ import com.abhijith.socialnetworkapp.featureprofile.presentation.profile.Profile
 import com.abhijith.socialnetworkapp.featureauth.presentation.register.RegisterScreen
 import com.abhijith.socialnetworkapp.featureprofile.presentation.search.SearchScreen
 import com.abhijith.socialnetworkapp.featureauth.presentation.splash.SplashScreen
+import com.abhijith.socialnetworkapp.featurechat.presentation.message.MessageScreen
 import com.abhijith.socialnetworkapp.featurepost.presentation.personlist.PersonListScreen
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -62,6 +63,13 @@ fun Navigation(navController: NavHostController, scaffoldState: ScaffoldState) {
         }
         composable(Screen.ChatScreen.route) {
             ChatScreen(
+                onNavigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+            )
+        }
+        composable(Screen.MessageScreen.route) {
+            MessageScreen(
+                chatId = "",
                 onNavigateUp = navController::navigateUp,
                 onNavigate = navController::navigate,
             )
